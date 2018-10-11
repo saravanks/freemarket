@@ -29,7 +29,7 @@ function getStock(changes){
   console.log('running')
   var getOptions = {
     //this address is wrong now
-      url: `https://api.github.com/repos/${UN}/freemarket/contents/content/settings/stock.json`,
+      url: `https://api.github.com/repos/${UN}/freemarket/contents/content/inventory/inventory.json`,
       auth: {
           "user": UN,
           "pass": UP,
@@ -44,7 +44,8 @@ function getStock(changes){
     var sha = data.sha
     var buf = new Buffer(data.content, 'base64').toString();
     var stock = JSON.parse(buf)
-    var newStock = calculateNewStock(stock,changes)
+    // inventory.inventory ????
+    var newStock = calculateNewStock(stock.inventory,changes)
     setStock(sha,newStock)
   }
   request(getOptions, getCallback);
@@ -55,7 +56,7 @@ function setStock(sha,newStock){
   var newFileContent = new Buffer(JSON.stringify({productStock:newStock})).toString("base64");
 
   var options = {
-    url: `https://api.github.com/repos/${UN}/freemarket/contents/content/settings/stock.json`,
+    url: `https://api.github.com/repos/${UN}/freemarket/contents/content/inventory/inventory.json`,
     auth: {
         "user": UN,
         "pass": UP
@@ -65,12 +66,12 @@ function setStock(sha,newStock){
     },
     method:"PUT",
     body:JSON.stringify({
-      "message":"update_stock",
+      "message":"update_inventory",
       "content":newFileContent,
       "sha":sha,
       "committer": {
-        "name":'andy',
-        "email":'andy@fake.com'
+        "name":UN,
+        "email":'freemarket@internet.org'
       }
     })
   };

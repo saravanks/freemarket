@@ -7,3 +7,9 @@
   publish = "build"
   command = "node getPasswords.js && npm run build"
   functions = "lambda"
+
+[template.environment]
+  GITHUB_USERNAME = "XXXXXX"
+  GITHUB_PASSWORD = "XXXXXX"
+  PUBLIC_KEY = "XXXXXX"
+  PRIVATE_KEY = "XXXXXX"
