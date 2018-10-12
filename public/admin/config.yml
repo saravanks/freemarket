@@ -327,8 +327,4 @@ collections: # A list of collections the CMS should be able to edit
           - label: Test
             name: test
             widget: selectlist
-            fields:
-              - name: title
-                label: Name
-                widget: string
 
