@@ -5,9 +5,15 @@ export function SelectList(data,ListWidget){
       var _props = this.props
       var x = {value:'one',
               label:'one',
-              name:'one'}
+              name:'one',
+              title:'one'}
       x.get=s=>x[s]
-      const value = [x]
+      var y = {value:'one',
+              label:'one',
+              name:'one',
+              title:'one'}
+      y.get=s=>y[s]
+      const value = [x,y]
       value.get=x=>value[x]
       value.set=(x,y)=>value[x]=y
       value.remove=x=>value.splice(x,1)
