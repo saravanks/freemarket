@@ -141,16 +141,16 @@ collections: # A list of collections the CMS should be able to edit
         name: "sortinventory"
         fields:
           - name: "sortinventory"
-          label: "Sort Inventory"
-          widget: list
-          fields:
-            - name: item
-              label: Item
-              widget: selectproduct
-            - name: stock
-              label: "current stock"
-              widget: number
-              
+            label: "Sort Inventory"
+            widget: list
+            fields:
+              - name: item
+                label: Item
+                widget: selectproduct
+              - name: stock
+                label: "current stock"
+                widget: number
+
   - name: "pages"
     label: Contact, About, Blog
     create: false
