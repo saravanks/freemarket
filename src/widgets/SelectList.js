@@ -8,10 +8,10 @@ export function SelectList(data,ListWidget){
               name:'one',
               title:'one'}
       x.get=s=>x[s]
-      var y = {value:'one',
-              label:'one',
-              name:'one',
-              title:'one'}
+      var y = {value:'two',
+              label:'two',
+              name:'two',
+              title:'two'}
       y.get=s=>y[s]
       const value = [x,y]
       value.get=x=>value[x]
