@@ -3,7 +3,7 @@ export function SelectList(data,ListWidget){
   return class SelectList extends React.Component {
     render(){
       var _props = this.props
-      const value = ["one,two,three"]
+      const value = ["one","two","three"]
       value.get=x=>value[x]
       value.set=(x,y)=>value[x]=y
       value.remove=x=>value.splice(x,1)
