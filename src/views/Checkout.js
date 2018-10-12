@@ -103,7 +103,7 @@ const getCarriers = region => {
 const getHighestShippingCost = () =>{
   var highestShippingCost = 0
   if(State.getCart().length<1   ){return 0}
-  if(State.getCarrier() == ' ' ){return 0}
+  if(State.getCarrier() == ' ' ) {return 0}
   if(State.getRegion()   == ' ' ){return 0}
   State.getCart().forEach(item=>{
     const shippingClass = data.shipping.filter(c=>c.title==item.class)[0]
@@ -133,6 +133,9 @@ const getSubtotal=()=>{
   return cartTotal
 }
 
+const validateFields=()=> 
+  State.getCarrier()!=' ' && 
+  formfields.every(f=> State.getField(slugify(f)) != false)
 
 const Checkout = () => {
   return(
@@ -196,10 +199,10 @@ const Checkout = () => {
     <div className="Checkout-Stripe-Container">
       <div 
         className='Checkout-Stripe-Blocker'
-        style={{height: State.getCarrier()!=' ' ? '1px' : '60px'}}
+        style={{height: validateFields() ? '1px' : '60px'}}
         onClick={(e)=>{
           e.preventDefault()
-          alert('Please Select Shipping')
+          alert('Please Fill Out All The Fields')
         }}
       />
       <StripeCheckout token={onToken} stripeKey={PUBLIC_KEY}/>  

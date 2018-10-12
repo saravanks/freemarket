@@ -53,12 +53,16 @@ class ProductPage extends React.Component{
             {options && options.length>0 &&
               <Select
                 title='Please Select :'
-                options={[...options.map(o=>
-                  ({label:( o.cost==0 || o.cost=='') ? 
-                            o.title :
-                            `${o.title}  (+ $${o.cost})`,
-                    value:o.title
-                  }))
+                options={[...options.map(o=>({
+                  // ({label:( o.cost==0 || o.cost=='') ? 
+                  //           o.title :
+                  //           `${o.title}  (+ $${o.cost})`,
+                  //   value:o.title
+                  // }))
+                  label:o.title,
+                  value:o.title,
+                  cost:o.cost
+                }))
                 ]}
                 onChange={(selection)=>{
                   setSelection(selection.value?selection.value:selection)
