@@ -121,12 +121,13 @@ const getSubtotal=()=>{
   var cartTotal = 0
   State.getCart().forEach(item=>{
     var price = parseFloat(item.price)
-    if(item.selected!=''){
-      const opt = item.options.filter(o=>o.title==item.selected)[0]
-      if(opt.cost){
-        price += parseFloat(opt.cost)
-      }
-    }
+    // ** now doing this in the product page **
+    // if(item.selected!=''){
+    //   const opt = item.options.filter(o=>o.title==item.selected)[0]
+    //   if(opt.cost){
+    //     price += parseFloat(opt.cost)
+    //   }
+    // }
     cartTotal += (price * parseFloat(item.quantity))
   })
   return cartTotal

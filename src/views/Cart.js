@@ -21,9 +21,12 @@ const getStock=item=>{
     return stock.filter(i=>i.title==name)[0].value
   }
   if(item.trackInventory){
-    return stock.filter(i=>i.title==item.title)[0].value
+    if(stock.filter(i=>i.title==item.title).length>0){
+      return stock.filter(i=>i.title==item.title)[0].value
+    }
+    return 1
   }
-  return false
+  return -1
 }
 
 const Cart = () =>{
@@ -57,7 +60,7 @@ return(
             onClick={(e)=>{
               e.preventDefault()
               // getStock() is broken
-              if(getStock(item) && (getStock(item) < item.quantity+1)){
+              if(getStock(item)>=0 && (getStock(item) < item.quantity+1)){
                 window.alert(`sorry we only have ${getStock(item)} in stock `)
               }else{
                 State.modCart(i,item.quantity+1)
@@ -73,7 +76,7 @@ return(
               value={item.quantity?item.quantity:''}
               onChange={e=>{
                 // getStock() is broken
-                if(getStock(item) && (getStock(item) < parseInt(e.target.value)||0)){
+                if(getStock(item)>=0 && (getStock(item) < parseInt(e.target.value)||0)){
                   window.alert(`sorry we only have ${getStock(item)} in stock `)
                 }else{
                   State.modCart(i,parseInt(e.target.value)||0)

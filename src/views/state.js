@@ -28,7 +28,8 @@ class State {
   getRegions=()=>this.regions.slice()
   setCarriers=x=>this.carriers.replace(x)
   getCarriers=()=>this.carriers.slice()
-  setSelection=(x)=>this.selection=x
+  setSelection=(x)=>this.selection.set(x)
+  getSelection=()=>this.selection.get()
   setCarrier=x=>this.carrier.set(x)
   getCarrier=()=>this.carrier.get()
   setRegion=x=>this.region.set(x)
