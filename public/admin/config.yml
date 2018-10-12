@@ -131,6 +131,26 @@ collections: # A list of collections the CMS should be able to edit
         name: "inventory"
         fields:
           - {label: Inventory, name: inventory, widget: inventory}
+  - name: sortinventory
+    label: "Sort Inventory"
+    editor:
+      preview: false
+    files:
+      - file: "content/inventory/sortinventory.json"
+        label: "sort inventory"
+        name: "sortinventory"
+        fields:
+          - name: "sortinventory"
+          label: "Sort Inventory"
+          widget: list
+          fields:
+            - name: item
+              label: Item
+              widget: selectproduct
+            - name: stock
+              label: "current stock"
+              widget: number
+              
   - name: "pages"
     label: Contact, About, Blog
     create: false

@@ -4,11 +4,13 @@ import React from 'react'
 // import {TestWidgetControl,TestWidgetPreview} from '../src/widgets/TestWidget.js'
 // import {MRelationControl, MRelationPreview} from '../src/widgets/MRelation.js'
 // import {SlidesControl,SlidesPreview} from './testWidget.js'
+// import {SortList} from '..src/widgets/SortList.js'
 
 import {InventoryControl} from '../src/widgets/InventoryControl.js'
 import {SelectDB} from '../src/widgets/SelectDB.js'
 import {SelectDBPreview} from '../src/widgets/SelectDBPreview.js'
 import {SelectClass} from '../src/widgets/SelectClass.js'
+import {SelectProduct} from '../src/widgets/SelectProduct.js'
 
 import '../src/globalStyles.css'
 import data from '../src/data.json'
@@ -66,7 +68,13 @@ var selectWidget = CMS.getWidget("select").control
 CMS.registerWidget(
   'selectClassData',
   SelectClass(data)
-  )
+)
+
+CMS.registerWidget(
+  'selectproduct',
+  SelectProduct(data)
+)
+
 // CMS.registerWidget(
 //   'selectClassData', (props) => (
 //   <SelectClass {...props} data={data} Select={selectWidget}/>
@@ -80,15 +88,18 @@ CMS.registerWidget(
   SelectDB(data,'regionsAndCarriers','regions'),
   SelectDBPreview
 )
+
 CMS.registerWidget(
   'selectCarrier',
   SelectDB(data,'regionsAndCarriers','carriers'),
   SelectDBPreview
-  )
+)
+
 CMS.registerWidget(
   'inventory',
   InventoryControl(data)
   )
+
     
     
     // CMS.registerWidget(
