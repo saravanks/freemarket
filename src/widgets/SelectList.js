@@ -1,9 +1,9 @@
 import React from 'react'
-export function SelectList(data,listwidget){
-  return class SelectProduct extends React.Component {
+export function SelectList(data,ListWidget){
+  return class SelectList extends React.Component {
     render(){
       return(
-        <listwidget {...this.props}/>
+        <ListWidget {...this.props}/>
       )
     }
   }
