@@ -196,7 +196,8 @@ class App extends Component {
             })}
 
             {data.products && data.products.map(product => {
-              const path = slugify(`/${product.title}`)
+              const slug = slugify(product.title)
+              const path = slugify(`/${slug}`)
               return (
                 <RouteWithMeta
                   key={path}
