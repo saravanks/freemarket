@@ -317,4 +317,18 @@ collections: # A list of collections the CMS should be able to edit
               - {label: Twitter Creator Account, name: twitterCreatorAccount, widget: string, required: false}
           - {label: Header Meta / Scripts, name: headerScripts, widget: text, required: false}
           - {label: Enable Service Worker Pre-Cache, name: enableServiceWorker, widget: boolean, required: false}
+  - name: test
+    label: Test
+    files:
+      - file: "content/inventory/test.json"
+        label: Test
+        name: test
+        fields:
+          - label: Test
+            name: test
+            widget: selectlist
+            fields:
+              - name: title
+                label: Name
+                widget: string
 
