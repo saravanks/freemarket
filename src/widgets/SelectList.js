@@ -8,6 +8,7 @@ export function SelectList(data,ListWidget){
               name:'one',
               title:'one'}
       x.get=s=>x[s]
+      x.set=(x,y)=>s[x]=y
       var y = {value:'two',
               label:'two',
               name:'two',
