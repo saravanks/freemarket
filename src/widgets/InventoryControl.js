@@ -7,7 +7,7 @@ export function InventoryControl(data){
   class InventoryControl extends React.Component{
     constructor(props){
       super(props)
-      this.state={inventory:data.products? this.getLines(data.products) :[]}
+      this.state={inventory:data.products ? this.getLines(data.products) :[]}
     }
     componentDidMount(){
       try{
@@ -30,6 +30,7 @@ export function InventoryControl(data){
     }
 
     getLines=(rawProducts=[])=>{
+      console.log('getLInes=>' + JSON.stringify(rawProducts))
       var display = []
       const stock = this.props.value
       const products = []
