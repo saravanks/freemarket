@@ -95,7 +95,6 @@ collections: # A list of collections the CMS should be able to edit
             widget: list
             fields:
               - {label: Carrier, name: title, widget: string}
-              - {label: Price per Kg, name: perKg, widget: number}
       - file: content/regionsAndCarriers/regions.json
         label: Regions
         name: regions
@@ -131,6 +130,9 @@ collections: # A list of collections the CMS should be able to edit
                 widget: selectRegion
               - label: Base Cost
                 name: cost
+                widget: number
+              - label: cost per KG
+                name: perKg
                 widget: number
   - name: "inventory"
     label: "Inventory"

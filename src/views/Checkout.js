@@ -185,7 +185,7 @@ const getHighestShippingCost = () =>{
     const weight = getTotalWeight()
     const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.cost)
     // console.log('cost=>' + cost)
-    l(`with class ${classTitle}, and carrier ${carrier.title},in region ${region.title}, with a base-fee of $${region.baseFee}, and with total weight : ${weight}, and $${region.perKg}/Kg, the shipping would be ${cost}`)
+    l(`with class ${classTitle}, and carrier ${carrier.title},in region ${region.title}, with a base-fee of $${region.cost}, and with total weight : ${weight}, and $${region.perKg}/Kg, the shipping would be ${cost}`)
     // const cost = region ? region.cost : 0
     if(cost>highestShippingCost){
       highestShippingCost=cost
