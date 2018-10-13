@@ -13,12 +13,15 @@ export function InventoryControl(data){
       try{
         fetch( BASE_URL+ "content/products", { method:"GET" })
         .then(r=>r.json()).then(r=>r.map(f=>f.path))
-        .then(paths=>Promise.all(
-          paths.filter(p=>p!='content/products/.init').map(path=>
-            fetch(BASE_URL+path,{ method:"GET" })
-            .then(r=>r.json()).then(r=>JSON.parse(atob(r.content)))
+        .then(paths=>{
+          console.log('paths: '+JSON.stringify(paths))
+          return Promise.all(
+            paths.filter(p=>p!='content/products/.init').map(path=>
+              fetch(BASE_URL+path,{ method:"GET" })
+              .then(r=>r.json()).then(r=>JSON.parse(atob(r.content)))
           )
-        ))
+        )
+        })
         .then(r=>{
           console.log('allfiles'+JSON.stringify(r))
           this.setState({inventory:this.getLines(r)})
