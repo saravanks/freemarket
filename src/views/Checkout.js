@@ -217,96 +217,103 @@ const validateFields=()=>
   State.getCarrier()!=' ' && 
   formfields.every(f=> State.getField(slugify(f)) != false)
 
-const Checkout = () => {
-  if(State.getTransactionComplete()==0)
-    {
-      State.setSelection(' ')
-      // State.setCarrier(' ')
-      // State.setRegion(' ')
-    return(
-    <div className='checkout-container'>
-      <p>Please enter your shipping info:</p>
-      <form name='purchase'>
-        <div className='Checkout-Region-Dropdown'>
-          <Select
-            ref={i=>this.regionDropdown=i}
-            title={State.getRegion()==' ' ? 'Please Select Region :' : State.getRegion()}
-            options={getRegions().map(r=>({label:r,value:r}))}
-            onChange={(e)=>{
-              this.shippingDropdown.reset()
-              State.setRegion(e.label);
-              State.setCarriers(getCarriers(e.label))
-              State.setCarrier(' ')
-              // encodeData()
-              console.log('from region change=>')
-              console.log(State.getCarrier())
-            }}
-          />
-        </div>
-        {formfields.map((field,index)=>{
-          const slug = slugify(field)
-          return(
-            <div key={index}>
-              <input
-                key={index}
-                placeholder={field}
-                name={slug} 
-                value={State.getField(slug) || ''} 
-                onChange={(e)=>State.setField(e.target.name,e.target.value)}
-              />
-            </div>
-        )})}
-        <div className='Checkout-Shipping-Dropdown'>
-          <Select 
-            ref={i=>this.shippingDropdown=i}
-            title={State.getCarrier()==' ' ? 'Please Select Shipping :' : State.getCarrier()}
-            options={
-              freeShipping() ? 
-              [{label:'Free Shipping', value:0}] :
-              State.getCarriers().map(c=>({label:c,value:c}))}
-            onChange={(e)=>{
-              if(e!=null){
-                State.setCarrier(e.label);
-                encodeData()
-                console.log('from carrier change=>')
-                console.log(State.getCarrier())
-              }
-              console.log('from carrier change (with null)=>')
-              console.log(State.getCarrier())
-
-            }}
-          />
-        </div>
-      </form>
-      <div className="Checkout-Register">
-        <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
-        <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p>
-        <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*0.15).toFixed(2)}</p>
-        <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2)}</p>
-      </div>
-      <div className="Checkout-Stripe-Container">
-        <div 
-          className='Checkout-Stripe-Blocker'
-          style={{height: validateFields() ? '1px' : '60px'}}
-          onClick={(e)=>{
-            e.preventDefault()
-            alert('Please Fill Out All The Fields')
-          }}
-        />
-        <StripeCheckout token={onToken} stripeKey={PUBLIC_KEY}/>  
-      </div>
-    </div>
-    )
+class Checkout extends React.Component {
+  componentDidMount(){
+    State.setSelection(' ')
+    State.setCarrier(' ')
+    State.setRegion(' ')
   }
-  else
-  {
-    return(
-      <div>
-      <div>thanks very much for your order, your details are below</div>
-      <div>{thankYouScreen}</div>
-      <Link to='/store'><div className='Checkout-Back'> Return to Shop </div></Link>
+  render(){
+    if(State.getTransactionComplete()==0)
+      {
+        // State.setSelection(' ')
+        // State.setCarrier(' ')
+        // State.setRegion(' ')
+      return(
+      <div className='checkout-container'>
+        <p>Please enter your shipping info:</p>
+        <form name='purchase'>
+          <div className='Checkout-Region-Dropdown'>
+            <Select
+              ref={i=>this.regionDropdown=i}
+              title={State.getRegion()==' ' ? 'Please Select Region :' : State.getRegion()}
+              options={getRegions().map(r=>({label:r,value:r}))}
+              onChange={(e)=>{
+                this.shippingDropdown.reset()
+                State.setRegion(e.label);
+                State.setCarriers(getCarriers(e.label))
+                State.setCarrier(' ')
+                // encodeData()
+                console.log('from region change=>')
+                console.log(State.getCarrier())
+              }}
+            />
+          </div>
+          {formfields.map((field,index)=>{
+            const slug = slugify(field)
+            return(
+              <div key={index}>
+                <input
+                  key={index}
+                  placeholder={field}
+                  name={slug} 
+                  value={State.getField(slug) || ''} 
+                  onChange={(e)=>State.setField(e.target.name,e.target.value)}
+                />
+              </div>
+          )})}
+          <div className='Checkout-Shipping-Dropdown'>
+            <Select 
+              ref={i=>this.shippingDropdown=i}
+              title={State.getCarrier()==' ' ? 'Please Select Shipping :' : State.getCarrier()}
+              options={
+                freeShipping() ? 
+                [{label:'Free Shipping', value:0}] :
+                State.getCarriers().map(c=>({label:c,value:c}))}
+              onChange={(e)=>{
+                if(e!=null){
+                  State.setCarrier(e.label);
+                  encodeData()
+                  console.log('from carrier change=>')
+                  console.log(State.getCarrier())
+                }
+                console.log('from carrier change (with null)=>')
+                console.log(State.getCarrier())
+
+              }}
+            />
+          </div>
+        </form>
+        <div className="Checkout-Register">
+          <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
+          <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p>
+          <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*0.15).toFixed(2)}</p>
+          <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2)}</p>
+        </div>
+        <div className="Checkout-Stripe-Container">
+          <div 
+            className='Checkout-Stripe-Blocker'
+            style={{height: validateFields() ? '1px' : '60px'}}
+            onClick={(e)=>{
+              e.preventDefault()
+              alert('Please Fill Out All The Fields')
+            }}
+          />
+          <StripeCheckout token={onToken} stripeKey={PUBLIC_KEY}/>  
+        </div>
       </div>
-    )
+      )
+    }
+    else
+    {
+      return(
+        <div>
+        <div>thanks very much for your order, your details are below</div>
+        <div>{thankYouScreen}</div>
+        <Link to='/store'><div className='Checkout-Back'> Return to Shop </div></Link>
+        </div>
+      )
+    }
   }
 }
 
