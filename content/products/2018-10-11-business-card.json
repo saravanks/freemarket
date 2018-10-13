@@ -1,6 +1,6 @@
 {
   "longDescription": "jdhkb",
-  "briefDescription": "lkjdharg",
+  "position": "3",
   "price": "2",
   "date": "2018-10-11T21:18:28.435Z",
   "trackInventory": true,
@@ -12,5 +12,6 @@
       "image": "/images/uploads/isabella juskova.jpg"
     }
   ],
+  "weight": "0.01",
   "primaryImage": "/images/uploads/card-og.png"
 }
