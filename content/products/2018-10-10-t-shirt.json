@@ -1,6 +1,6 @@
 {
   "longDescription": "tshirt",
-  "briefDescription": "tshirt",
+  "position": "1",
   "price": "10",
   "date": "2018-10-10T19:19:15.054Z",
   "trackInventory": true,
@@ -15,11 +15,13 @@
       "image": "/images/uploads/isabella juskova.jpg"
     }
   ],
+  "weight": "0.1",
   "primaryImage": "/images/uploads/card-og.png",
   "options": [
     {
       "title": "red",
-      "cost": "-3"
+      "cost": "3",
+      "separateStock": true
     },
     {
       "title": "brown",
