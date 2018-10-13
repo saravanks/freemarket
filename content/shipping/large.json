@@ -26,15 +26,18 @@
       "regions": [
         {
           "title": "Canada",
-          "cost": "120"
+          "cost": "120",
+          "perKg": "1"
         },
         {
           "title": "USA",
-          "cost": "183"
+          "cost": "183",
+          "perKg": "1"
         },
         {
           "title": "Rest of World",
-          "cost": "190"
+          "cost": "190",
+          "perKg": "1"
         }
       ]
     },
@@ -43,7 +46,8 @@
       "regions": [
         {
           "title": "Canada",
-          "cost": "80"
+          "cost": "80",
+          "perKg": "1"
         }
       ]
     }
