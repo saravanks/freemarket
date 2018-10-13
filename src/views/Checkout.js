@@ -183,6 +183,8 @@ const getHighestShippingCost = () =>{
     const carrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier())[0]
     const region = carrier.regions.filter(r=>r.title==State.getRegion())[0]
     const weight = getTotalWeight()
+    // if the perKg field is empty assume its 0
+    if(region.perKg==undefined){region.perKg==0}
     const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.cost)
     // console.log('cost=>' + cost)
     l(`with class ${classTitle}, and carrier ${carrier.title},in region ${region.title}, with a base-fee of $${region.cost}, and with total weight : ${weight}, and $${region.perKg}/Kg, the shipping would be ${cost}`)
