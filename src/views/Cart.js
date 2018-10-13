@@ -42,7 +42,7 @@ const getStock=item=>{
     return getInventory(item.title+'('+option.title+')')
   } else {
     if(item.trackInventory){
-      return getInventory(item)
+      return getInventory(item.title)
     } else {
       return -1
     }
