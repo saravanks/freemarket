@@ -10,6 +10,7 @@ import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
 
 const URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/content/settings/stock.json`
 const stock = data.inventory[0].inventory
+const toDollars = x => parseFloat(x).toFixed(2)
 
 const getInventory = title =>{
   //there exists an inventory file
@@ -142,12 +143,12 @@ return(
             <MinusSquare size={29} className='Cart-Feather'/>
           </div>
         </div>
-        <div className='Cart-Item-Price'>${item.price*item.quantity}</div>
+        <div className='Cart-Item-Price'>${toDollars(item.price*item.quantity)}</div>
       </div>
     )} 
     <div className='Cart-Footer'>
       <div className='Cart-Footer-Total'>
-        TOTAL : ${State.getTotal()}
+        TOTAL : ${toDollars(State.getTotal())}
       </div>
       <Link to='/checkout'>
         <div className='Cart-Footer-Checkout'>

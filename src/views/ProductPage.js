@@ -9,6 +9,8 @@ import data from '../data.json'
 
 import './ProductPage.css'
 
+const toDollars = x => parseFloat(x).toFixed(2)
+
 const getSmallImages = (images) => {
   var smallImages = []
   images.forEach(image=>{
@@ -96,7 +98,7 @@ class ProductPage extends React.Component{
             <Gallery imageList={getSmallImages(images)}/>
             <div className="Product-bar">
               <div className="Product-name">{title || ''}</div>
-              <div className="Product-price">${this.state.cost}</div>
+              <div className="Product-price">${toDollars(this.state.cost)}</div>
             </div>
             {options && options.length>0 &&
               <Select
@@ -109,7 +111,7 @@ class ProductPage extends React.Component{
                   // }))
                   label:o.title,
                   value:o.title,
-                  cost:o.cost
+                  cost:toDollars(o.cost)
                 }))
                 ]}
                 onChange={(selection)=>{
