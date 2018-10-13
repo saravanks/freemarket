@@ -76,7 +76,7 @@ const onToken = token => {
           body: JSON.stringify(State.getCart())
         })
         // console.log(State.getCart())
-        // submit(encodeData(token))
+        submit(encodeData(token))
       }
     });
   });
