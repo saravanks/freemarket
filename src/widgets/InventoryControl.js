@@ -30,7 +30,7 @@ export function InventoryControl(data){
     }
 
     getLines=(rawProducts=[])=>{
-      console.log('getLInes=>' + JSON.stringify(rawProducts))
+      console.log('getLInes=>' + JSON.stringify(rawProducts),rawProducts)
       var display = []
       const stock = this.props.value
       const products = []
