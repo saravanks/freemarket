@@ -75,7 +75,7 @@ collections: # A list of collections the CMS should be able to edit
     editor:
       preview: false
     files:
-      - file:
+      - file: content/regionsAndCarriers/settings.json
         label: Settings
         name: settings
         fields:
