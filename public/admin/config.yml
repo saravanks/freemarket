@@ -20,8 +20,13 @@ collections: # A list of collections the CMS should be able to edit
     fields: # The fields each document in this collection have
       - {label: Name, name: title, widget: "string"}
       - {label: Price, name: price, widget: number, required: true}
+      - {label: Weight, name: weight, widget: number, required: true}
       - {label: Sorting Number, name: position, widget: number, required: false, default: 1}
       - {label: Track Inventory, name: trackInventory, widget: boolean}
+      - label: Shipping Class
+        name: class
+        widget: selectClassData
+        required: true
       - {label: Store Image, name: primaryImage, widget: image, required: true}
       - {label: Description, name: longDescription, widget: markdown}
       - label: "Carousel Images"
@@ -46,9 +51,6 @@ collections: # A list of collections the CMS should be able to edit
           - label: Calculate Stock for This Option Separately
             name: separateStock
             widget: boolean
-      - label: Shipping Class
-        name: class
-        widget: selectClassData
       - label: 'Status'
         name: 'status'
         widget: 'select'
@@ -82,6 +84,7 @@ collections: # A list of collections the CMS should be able to edit
             widget: list
             fields:
               - {label: Carrier, name: title, widget: string}
+              - {label: Price per Kg, name: perKgCost, widget: number}
       - file: content/regionsAndCarriers/regions.json
         label: Regions
         name: regions
@@ -115,11 +118,8 @@ collections: # A list of collections the CMS should be able to edit
               - label: Region
                 name: title
                 widget: selectRegion
-              - label: Cost
+              - label: Base Cost
                 name: cost
-                widget: number
-              - label: Max Ship Together as One
-                name: maxPack
                 widget: number
   - name: "inventory"
     label: "Inventory"
