@@ -2,7 +2,27 @@
   "inventory": [
     {
       "title": "t-shirt",
-      "value": "100"
+      "value": "20"
+    },
+    {
+      "title": "t-shirt(red)",
+      "value": "20"
+    },
+    {
+      "title": "washing machine",
+      "value": "20"
+    },
+    {
+      "title": "business card",
+      "value": "20"
+    },
+    {
+      "title": "jelly-fish(male)",
+      "value": "20"
+    },
+    {
+      "title": "jelly-fish(female)",
+      "value": "20"
     }
   ]
 }
