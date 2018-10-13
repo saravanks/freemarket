@@ -86,18 +86,51 @@ const getRegions = () =>{
   return Array.from(regions)
 }
 
-const getCarriers = region => {
-  // console.log('region: ' + region)
-  var carriers = {}
+// const getCarriers = region => {
+//   // console.log('region: ' + region)
+//   var carriers = {}
+//   State.getCart().forEach(item=>{
+//     const shippingClass = data.shipping.filter(c=>c.title==item.class)[0]
+//     shippingClass && shippingClass.carriers.forEach(carrier=>{
+//       if(carrier.regions.filter(r=>r.title==State.getRegion()).length>0){
+//         carriers[carrier.title] = carrier.regions.filter(r=>r.title==State.getRegion())[0].cost
+//       }
+//     })
+//   })
+//   return Object.keys(carriers)
+// }
+
+const getCarriers = () =>{
+  const currentRegion = State.getRegion()
+  var carriersNames = data.regionsAndCarriers.filter(x=>x.name=='carriers')[0].carriers.map(x=>x.title)
+  var classesInCartSet = new Set([])
   State.getCart().forEach(item=>{
-    const shippingClass = data.shipping.filter(c=>c.title==item.class)[0]
-    shippingClass && shippingClass.carriers.forEach(carrier=>{
-      if(carrier.regions.filter(r=>r.title==State.getRegion()).length>0){
-        carriers[carrier.title] = carrier.regions.filter(r=>r.title==State.getRegion())[0].cost
-      }
-    })
+    classesInCartSet.add(item.class)
   })
-  return Object.keys(carriers)
+  var classesInCart = Array.from(classesInCartSet)
+  // console.log('classesInCart=>  '+classesInCart)
+  var commonCarriersNames = []
+  carriersNames.forEach(name=>{
+    // only add carriers that are supported, in that region, by ALL of the classes in the cart
+    if(classesInCart.every(c=>{
+      const classObject = data.shipping.filter(x=>x.title==c)[0]
+      // console.log('classObject=>'+JSON.stringify(classObject))
+      const classRegions = classObject.carriers.filter(x=>x.title==name)[0].regions
+      return classRegions.filter(r=>r.title==currentRegion).length>0
+    })){
+      commonCarriersNames.push(name)
+    }
+  })
+  // console.log('commonCarrieraNames=>'+commonCarriersNames)
+  return commonCarriersNames
+}
+
+const getTotalWeight = () => {
+  var weight = 0
+  State.getCart().forEach(item=>{
+    weight += item.weight
+  })
+  return weight
 }
 
 const getHighestShippingCost = () =>{
@@ -105,13 +138,20 @@ const getHighestShippingCost = () =>{
   if(State.getCart().length<1   ){return 0}
   if(State.getCarrier() == ' ' ) {return 0}
   if(State.getRegion()   == ' ' ){return 0}
+  var classesInCart = new Set([])
   State.getCart().forEach(item=>{
-    const shippingClass = data.shipping.filter(c=>c.title==item.class)[0]
+    classesInCart.add(item.class)
+  })
+  Array.from(classesInCart).forEach(classTitle=>{
+    const shippingClass = data.shipping.filter(c=>c.title==classTitle)[0]
     const carrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier())[0]
     const region = carrier.regions.filter(r=>r.title==State.getRegion())[0]
-    const cost = region ? region.cost : 0
+    const weight = getTotalWeight()
+    const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.baseFee)
+    console.log('cost=>' + cost)
+    // const cost = region ? region.cost : 0
     if(cost>highestShippingCost){
-      highestShippingCost=parseFloat(cost)
+      highestShippingCost=cost
     }
   })
   return highestShippingCost
