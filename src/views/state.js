@@ -8,6 +8,7 @@ class State {
   region = observable.box(' ')
   shippingCost = observable.box(0)
   carriers = observable([])
+  transactionComplete = observable.box(0)
   
   setField =(field,val)=>this.fields[field]=val
   getField = field => this.fields[field] ? this.fields[field] : false
@@ -34,5 +35,17 @@ class State {
   getCarrier=()=>this.carrier.get()
   setRegion=x=>this.region.set(x)
   getRegion=x=>this.region.get()
+
+  setTransactionComplete=x=>this.transactionComplete.set(x)
+  getTransactionComplete=x=>this.transactionComplete.get()
+
+  reset=()=>{
+    this.cart.replace([])
+    this.carriers.replace([])
+    this.regions.replace([])
+    this.carrier.set(' ')
+    this.region.set(' ')
+    this.shippingCost.set(0)
+  }
 }
 export default State = new State()
