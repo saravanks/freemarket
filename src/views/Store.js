@@ -10,7 +10,10 @@ export default ({data}) => {
       {products
         .sort((a,b)=>a.position-b.position)
         .map(({title,primaryImage})=>
-          <div className="Store-Product">
+          <div 
+            className="Store-Product"
+            key={title}
+          >
             <Link  to={'/'+slugify(title)}>
               <img  
                 className="Store-Product-Page-image"  

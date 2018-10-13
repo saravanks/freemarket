@@ -76,8 +76,8 @@ collections: # A list of collections the CMS should be able to edit
       preview: false
     files:
       - file:
-        label: settings
-        name: Settings
+        label: Settings
+        name: settings
         fields:
             - label: Activate Free Shipping Threshold
               name: freeShipping

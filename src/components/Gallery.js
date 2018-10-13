@@ -27,6 +27,7 @@ class Gallery extends React.Component{
           {imageList.length>0 && 
             imageList.map((_,i)=>
               <img 
+                key={i}
                 style={{display:i==view?'inline':'none'}} 
                 className='Gallery-Image' 
                 src={imageList[i].image}/>
@@ -47,6 +48,7 @@ class Gallery extends React.Component{
           <div style={{height:'13px'}}>
           {imageList.length>1 && imageList.map((_,i)=>
             <div 
+              key={i}
               className='Gallery-Select-Bullets' 
               style={{fontSize:i==view?'10px':'8px' ,opacity:i!=view?0.4:1}}>
               {' O '}

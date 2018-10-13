@@ -11,26 +11,70 @@ import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
 const URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/content/settings/stock.json`
 const stock = data.inventory[0].inventory
 
+const getInventory = title =>{
+  //there exists an inventory file
+  if(
+    data.inventory.filter(x=>x.name=='inventory').length>0 &&
+    // there exists an entry for this item
+    data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title).length>0
+  )
+  {
+    // return the value there
+    return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title)[0].value
+  }else{
+    return -1
+  }
+}
+
 const getStock=item=>{
-  var chosenOption = {}
-  if(item.options && item.options.filter(o=>o.title==item.selected) > 0 ){
-    chosenOption = item.options.filter(o=>o.title==item.selected)[0]
-  }
-  if(item.selected!='' && chosenOption.separateStock){
-    const name = ''+item.title+'('+chosenOption.title+')'
-    return stock.filter(i=>i.title==name)[0].value
-  }
-  if(item.trackInventory){
-    if(stock.filter(i=>i.title==item.title).length>0){
-      return stock.filter(i=>i.title==item.title)[0].value
+  // if no selections to worry about
+  if(item.selected==''){
+    if(item.trackInventory){
+      return getInventory(item.title)
+    }else{
+      return -1
     }
-    return 1
   }
-  return -1
+  // there is a selection
+  const option = item.options.filter(x=>x.title==item.selected)[0]
+  if(option.separateStock){
+    return getInventory(item.title+'('+option.title+')')
+  } else {
+    return -1
+  }
+  // //if we dont track the item or any options
+  // if(!item.trackInventory && (item.options.every(x=>x.separateStock==false)){return -1}
+  // //if we dont track the item and
+  // if(!item.trackInventory && )
+  // var chosenOption = {}
+  // if(item.options && item.options.filter(o=>o.title==item.selected).length > 0 ){
+  //   chosenOption = item.options.filter(o=>o.title==item.selected)[0]
+  // }
+  // if(item.selected!='' && chosenOption.separateStock){
+  //   const name = ''+item.title+'('+chosenOption.title+')'
+  //   // if we have a listing for it
+  //   if(data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==name).lenght>0){
+  //   // return the value
+  //     return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==name)[0].value
+  //   }else{
+  //     // else return 0
+  //     return 0
+  //   }
+  // }
+  // if(item.trackInventory){
+  //   if(data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==item.title).length>0){
+  //     data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==item.title)[0].value
+  //   }else{
+  //     return 0
+  //   }
+  // }else{
+  //   return 1
+  // }
+  // return -1
 }
 
 const Cart = () =>{
-  
+console.log(State.getCart().slice())
 return(
   <div className='Cart-Container'>
     <Link to='/store'><div className='Cart-Back'>continue shopping</div></Link>
@@ -40,7 +84,11 @@ return(
       </div>
     }
     {State.cart.map((item,i) => 
-      <div className='Cart-Line' onClick={(e)=>e.preventDefault()}>
+      <div 
+        key={i}
+        className='Cart-Line' 
+        onClick={(e)=>e.preventDefault()}
+      >
         <div 
           className='Cart-Remove' 
           onClick={()=>{State.RFC(i)}}

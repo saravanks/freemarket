@@ -222,7 +222,7 @@ const Checkout = () => {
       {formfields.map((field,index)=>{
         const slug = slugify(field)
         return(
-          <div>
+          <div key={index}>
             <input
               key={index}
               placeholder={field}

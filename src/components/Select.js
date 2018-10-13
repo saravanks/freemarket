@@ -37,6 +37,7 @@ class Select extends React.Component{
           options.map((option,i)=>{
             return(
               <div 
+                key={i}
                 className='Select-Dropdown' 
                 style={{top:(i+1)*30+'px',backgroundColor:i==selection?'grey':'white'}}
                 onClick={()=>{
