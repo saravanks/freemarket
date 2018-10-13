@@ -67,7 +67,7 @@ collections: # A list of collections the CMS should be able to edit
           - {label: Canonical Link, name: canonicalLink, widget: string, required: false}
           - {label: Noindex, name: noindex, widget: boolean, required: false}
   - name: regionsAndCarriers
-    label: Regions/Carriers
+    label: Regions/Carriers/Setting
     extension: json
     format: json
     create: false
@@ -75,6 +75,17 @@ collections: # A list of collections the CMS should be able to edit
     editor:
       preview: false
     files:
+      - file:
+        label: settings
+        name: Settings
+        fields:
+            - label: Activate Free Shipping Threshold
+              name: freeShipping
+              widget: boolean
+              default: false
+            - label: Free above
+              name: above
+              widget: number
       - file: content/regionsAndCarriers/carriers.json
         label: Carriers
         name: carriers

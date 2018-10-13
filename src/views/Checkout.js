@@ -14,6 +14,12 @@ const l = x =>console.log(x)
 
 const formfields = ['Name','Street Address','City', 'State/Province','ZIP code / Postal Code', 'Country']
 
+const freeShipping=()=>{
+  const freeShippingObject = data.regionsAndCarriers.filter(x=>x.name=='settings')[0]
+  if(freeShippingObject.freeShipping==false){return false}
+  return getSubtotal() > freeShippingObject.above
+}
+
 const encodeData=token=>{
   const relevantFieldsFromItem = ['title','quantity','price','options']
   const purchaseInfo    = '\npurchases: ' + State.cart.map((item,i)=>`\n\n#${i+1} :` + relevantFieldsFromItem.map(field=>`\n${field}:${item[field]}`))
@@ -145,6 +151,7 @@ const getTotalWeight = () => {
 }
 
 const getHighestShippingCost = () =>{
+  if(freeShipping()){return 0}
   var highestShippingCost = 0
   if(State.getCart().length<1   ){return 0}
   if(State.getCarrier() == ' ' ) {return 0}
@@ -229,7 +236,10 @@ const Checkout = () => {
         <Select 
           ref={i=>this.shippingDropdown=i}
           title={State.getCarrier()==' ' ? 'Please Select Shipping :' : State.getCarrier()}
-          options={State.getCarriers().map(c=>({label:c,value:c}))}
+          options={
+            freeShipping() ? 
+            [{label:'Free Shipping', value:0}] :
+            State.getCarriers().map(c=>({label:c,value:c}))}
           onChange={(e)=>{
             if(e!=null){
               State.setCarrier(e.label);
