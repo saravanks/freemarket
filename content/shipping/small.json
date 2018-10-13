@@ -7,17 +7,17 @@
         {
           "title": "Canada",
           "cost": "10",
-          "maxPack": "-1"
+          "perKg": "1"
         },
         {
           "title": "USA",
           "cost": "14",
-          "maxPack": "2"
+          "perKg": "1"
         },
         {
           "title": "Rest of World",
           "cost": "27",
-          "maxPack": "1"
+          "perKg": "1"
         }
       ]
     },
@@ -27,17 +27,17 @@
         {
           "title": "Canada",
           "cost": "10",
-          "maxPack": "2"
+          "perKg": "1"
         },
         {
           "title": "USA",
           "cost": "20",
-          "maxPack": "2"
+          "perKg": "1"
         },
         {
           "title": "Rest of World",
           "cost": "30",
-          "maxPack": "1"
+          "perKg": "1"
         }
       ]
     },
@@ -47,7 +47,7 @@
         {
           "title": "Canada",
           "cost": "5",
-          "maxPack": "1"
+          "perKg": "1"
         }
       ]
     }
