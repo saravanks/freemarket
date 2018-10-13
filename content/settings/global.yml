@@ -1,8 +1,6 @@
 siteTitle: Fish Store
-siteUrl: 'https://netlify-cms-react-starter.netlify.com'
-siteDescription: >-
-  A starter project for creating lightning-fast, offline-first websites with
-  Netlify CMS and React.
+siteUrl: 'https://nostalgic-wright-0e5902.netlify.com'
+siteDescription: 'A template for Freemarket, a free e-commerce solution for non-coders'
 socialMediaCard:
   image: /images/uploads/card-og.png
   twitterCreatorAccount: '@Jinksi'
