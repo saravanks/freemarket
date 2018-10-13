@@ -24,7 +24,9 @@ const onCompletePayment = () =>{
 
 const freeShipping=()=>{
   const freeShippingObject = data.regionsAndCarriers.filter(x=>x.name=='settings')[0]
-  if(freeShippingObject.freeShipping==false){return false}
+  if(freeShippingObject.freeShipping==undefined || (freeShippingObject.freeShipping && freeShippingObject.freeShipping==false)){
+    return false
+  }
   return getSubtotal() > freeShippingObject.above
 }
 
@@ -86,7 +88,10 @@ const submit = (data) => {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: encode({ "form-name": "purchase", "data":data })
   })
-    .then(() => alert("Success!"))
+    .then(() =>{
+      alert("Success!")
+      onCompletePayment()
+    })
     .catch(error => alert(error));
 };
 
