@@ -8,10 +8,10 @@ import State from './state'
 import data from '../data.json'
 import './Checkout.css'
 
-
 import {PUBLIC_KEY} from '../PUBLIC_KEY.js'
 
 const l = x =>console.log(x)
+
 const formfields = ['Name','Street Address','City', 'State/Province','ZIP code / Postal Code', 'Country']
 
 const encodeData=token=>{
@@ -19,9 +19,10 @@ const encodeData=token=>{
   const purchaseInfo    = '\npurchases: ' + State.cart.map((item,i)=>`\n\n#${i+1} :` + relevantFieldsFromItem.map(field=>`\n${field}:${item[field]}`))
   const userDataStrings = Object.keys(State.fields).map(name=>`${name} : ${State.fields[name]}`)
   const cartInfo = `
-subtotal : ${State.getTotal()}
-total with shipping : ${State.getTotalWithShipping()}
-total with tax : ${State.getTotalWithShipping() * 1.16}
+subtotal : $${(getSubtotal()).toFixed(2)}
+shipping : $${(getHighestShippingCost()).toFixed(2)}
+tax : $${((getSubtotal()+getHighestShippingCost())*0.15).toFixed(2)}
+total : $${((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2)}
 date : ${Date()}
   `
   const userData = userDataStrings.join('\n')
