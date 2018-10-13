@@ -4,13 +4,13 @@ const UP = process.env.GITHUB_PASSWORD
 var request = require('request');
 
 function calculateNewStock(stock,changes){
-  var newStock = [...stock.productStock]
+  var newStock = [...stock]
   for(let change of changes){
     newStock=newStock.map(stock=>{
-      if(stock.productType==change.title){
+      if(stock.title==change.title){
         return {
-          productType:stock.productType,
-          currentStock:stock.currentStock-change.quantity
+          title:stock.title,
+          value:stock.value-change.quantity
           }
       }else{
         return stock
@@ -21,8 +21,8 @@ function calculateNewStock(stock,changes){
 }
 
 exports.handler = function(event, context, callback) {
-  var changes = JSON.parse(event.body)
-  getStock(changes)
+  var cart = JSON.parse(event.body)
+  getStock(cart)
 }
 
 function getStock(changes){
