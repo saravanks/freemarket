@@ -59,7 +59,7 @@ ${tokenString}`
 const onToken = token => {
   const data = {
     token:token,
-    amount : 111,
+    amount : ((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2),
     idempotency_key:uuid(),
   }
   fetch("/.netlify/functions/purchase", {
@@ -218,6 +218,9 @@ const validateFields=()=>
 const Checkout = () => {
   if(State.getTransactionComplete()==0)
     {
+      State.setSelection(' ')
+      State.setCarrier(' ')
+      State.setRegion(' ')
     return(
     <div className='checkout-container'>
       <p>Please enter your shipping info:</p>
