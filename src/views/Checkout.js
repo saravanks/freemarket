@@ -221,8 +221,8 @@ const Checkout = () => {
   if(State.getTransactionComplete()==0)
     {
       State.setSelection(' ')
-      State.setCarrier(' ')
-      State.setRegion(' ')
+      // State.setCarrier(' ')
+      // State.setRegion(' ')
     return(
     <div className='checkout-container'>
       <p>Please enter your shipping info:</p>

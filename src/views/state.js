@@ -1,4 +1,6 @@
-import { observable } from "mobx"
+import { observable,configure } from "mobx"
+
+configure({ isolateGlobalState: true })
 
 class State {
   cart = observable([])
