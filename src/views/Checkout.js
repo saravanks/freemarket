@@ -8,8 +8,10 @@ import State from './state'
 import data from '../data.json'
 import './Checkout.css'
 
+
 import {PUBLIC_KEY} from '../PUBLIC_KEY.js'
 
+const l = x =>console.log(x)
 const formfields = ['Name','Street Address','City', 'State/Province','ZIP code / Postal Code', 'Country']
 
 const encodeData=token=>{
@@ -102,34 +104,42 @@ const getRegions = () =>{
 
 const getCarriers = () =>{
   const currentRegion = State.getRegion()
+  l(`in region ${currentRegion}`)
   var carriersNames = data.regionsAndCarriers.filter(x=>x.name=='carriers')[0].carriers.map(x=>x.title)
+  l(`available carriers are : ${carriersNames}`)
   var classesInCartSet = new Set([])
   State.getCart().forEach(item=>{
     classesInCartSet.add(item.class)
   })
   var classesInCart = Array.from(classesInCartSet)
+  l(`the classes in the cart are : ${classesInCart}`)
   // console.log('classesInCart=>  '+classesInCart)
   var commonCarriersNames = []
   carriersNames.forEach(name=>{
     // only add carriers that are supported, in that region, by ALL of the classes in the cart
+    l(`carrier ${name}`)
     if(classesInCart.every(c=>{
       const classObject = data.shipping.filter(x=>x.title==c)[0]
       // console.log('classObject=>'+JSON.stringify(classObject))
       const classRegions = classObject.carriers.filter(x=>x.title==name)[0].regions
+      l(`ships to these regions : ${classRegions.map(r=>r.title)}`)
       return classRegions.filter(r=>r.title==currentRegion).length>0
     })){
       commonCarriersNames.push(name)
     }
   })
   // console.log('commonCarrieraNames=>'+commonCarriersNames)
+  l(`so the carriers which ship to this region, for all classes in the cart are : ${commonCarriersNames}`)
   return commonCarriersNames
 }
 
 const getTotalWeight = () => {
   var weight = 0
   State.getCart().forEach(item=>{
-    weight += item.weight
+    l(`item ${item.title} weighs ${item.weight} and there are ${item.quantity} in the cart`)
+    weight += item.weight * item.quantity
   })
+  l(`so the total weight is ${weight}`)
   return weight
 }
 
@@ -142,18 +152,21 @@ const getHighestShippingCost = () =>{
   State.getCart().forEach(item=>{
     classesInCart.add(item.class)
   })
+  l(`in calculating the shipping cost, these classes are in the cart : ${Array.from(classesInCart)}`)
   Array.from(classesInCart).forEach(classTitle=>{
     const shippingClass = data.shipping.filter(c=>c.title==classTitle)[0]
     const carrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier())[0]
     const region = carrier.regions.filter(r=>r.title==State.getRegion())[0]
     const weight = getTotalWeight()
     const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.baseFee)
-    console.log('cost=>' + cost)
+    // console.log('cost=>' + cost)
+    l(`with class ${classTitle}, and carrier ${carrier.title},in region ${region.title}, with a base-fee of ${region.baseFee}, and with total weight : ${weight}, and ${region.perKg}perKg, the shipping would be ${cost}`)
     // const cost = region ? region.cost : 0
     if(cost>highestShippingCost){
       highestShippingCost=cost
     }
   })
+  l(`so the highest option is ${highestShippingCost}`)
   return highestShippingCost
 }
 
