@@ -86,6 +86,14 @@ collections: # A list of collections the CMS should be able to edit
             - label: Free above
               name: above
               widget: number
+            - label: Charge Tax?
+              name: chargeTax
+              widget: boolean
+              default: false
+            - label: Tax Rate
+              name: taxRate
+              widget: number
+              default: 0
       - file: content/regionsAndCarriers/carriers.json
         label: Carriers
         name: carriers
@@ -144,26 +152,6 @@ collections: # A list of collections the CMS should be able to edit
         name: "inventory"
         fields:
           - {label: Inventory, name: inventory, widget: inventory}
-  - name: sortinventory
-    label: "Sort Inventory"
-    editor:
-      preview: false
-    files:
-      - file: "content/inventory/sortinventory.json"
-        label: "sort inventory"
-        name: "sortinventory"
-        fields:
-          - name: "sortinventory"
-            label: "Sort Inventory"
-            widget: list
-            fields:
-              - name: item
-                label: Item
-                widget: selectproduct
-              - name: stock
-                label: "current stock"
-                widget: number
-
   - name: "pages"
     label: Contact, About, Blog
     create: false
@@ -330,18 +318,3 @@ collections: # A list of collections the CMS should be able to edit
               - {label: Twitter Creator Account, name: twitterCreatorAccount, widget: string, required: false}
           - {label: Header Meta / Scripts, name: headerScripts, widget: text, required: false}
           - {label: Enable Service Worker Pre-Cache, name: enableServiceWorker, widget: boolean, required: false}
-  - name: test
-    label: Test
-    files:
-      - file: "content/inventory/test.json"
-        label: Test
-        name: test
-        fields:
-          - label: Test
-            name: test
-            widget: selectlist
-            fields:
-              - name: title
-                label: Name
-                widget: string
-
