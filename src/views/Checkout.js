@@ -225,7 +225,7 @@ class Checkout extends React.Component {
   }
   render(){
     const chargeTax = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].chargeTax
-    const taxRate = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate
+    const taxRate = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate || 0
     if(State.getTransactionComplete()==0)
       {
         // State.setSelection(' ')
