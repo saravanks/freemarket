@@ -35,16 +35,21 @@ export function InventoryControl(data){
       const stock = this.props.value
       const products = []
       rawProducts.forEach(p=>{
-        if(p.options.length==0 && p.trackInventory){products.push(p.title)}
-        //if every option tracks its own stock, dont include the parent category, even if it has trackInventory
-        if(p.options.length>0 && p.trackInventory){
-          if(!p.options.every(o=>o.separateStock)){products.push(p.title)}
-        }
-        if(p.options.length>0){
-          p.options.forEach(o=>{
-            if(o.separateStock){
-              products.push(''+p.title+'('+o.title+')')
-      }})}})
+        // sometimes options is undefined
+        if(p.options==undefined){
+         p.trackInventory && products.push(p.title)
+        }else{
+          if(p.options.length==0 && p.trackInventory){products.push(p.title)}
+          //if every option tracks its own stock, dont include the parent category, even if it has trackInventory
+          if(p.options.length>0 && p.trackInventory){
+            if(!p.options.every(o=>o.separateStock)){products.push(p.title)}
+          }
+          if(p.options.length>0){
+            p.options.forEach(o=>{
+              if(o.separateStock){
+                products.push(''+p.title+'('+o.title+')')
+        
+      }})}}})
       products.forEach(title=>{
         const value = stock[title] ? stock[title] : 0
         display.push({title,value})
