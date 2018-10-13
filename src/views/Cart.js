@@ -41,7 +41,11 @@ const getStock=item=>{
   if(option.separateStock){
     return getInventory(item.title+'('+option.title+')')
   } else {
-    return -1
+    if(item.trackInventory){
+      return getStock(item)
+    } else {
+      return -1
+    }
   }
   // //if we dont track the item or any options
   // if(!item.trackInventory && (item.options.every(x=>x.separateStock==false)){return -1}
