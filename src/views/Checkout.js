@@ -24,7 +24,11 @@ const onCompletePayment = () =>{
 
 const freeShipping=()=>{
   const freeShippingObject = data.regionsAndCarriers.filter(x=>x.name=='settings')[0]
-  if(freeShippingObject.freeShipping==undefined || (freeShippingObject.freeShipping && freeShippingObject.freeShipping==false)){
+  // if user hasnt set this up right, or at all
+  if(freeShippingObject.freeShipping==undefined ||
+     freeShippingObject.above==undefined ||
+     // or if they have set it up to be disabled
+     (freeShippingObject.freeShipping && freeShippingObject.freeShipping==false)){
     return false
   }
   return getSubtotal() > freeShippingObject.above
@@ -179,7 +183,7 @@ const getHighestShippingCost = () =>{
     const carrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier())[0]
     const region = carrier.regions.filter(r=>r.title==State.getRegion())[0]
     const weight = getTotalWeight()
-    const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.baseFee)
+    const cost = (parseFloat(region.perKg) * weight) + parseFloat(region.cost)
     // console.log('cost=>' + cost)
     l(`with class ${classTitle}, and carrier ${carrier.title},in region ${region.title}, with a base-fee of $${region.baseFee}, and with total weight : ${weight}, and $${region.perKg}/Kg, the shipping would be ${cost}`)
     // const cost = region ? region.cost : 0

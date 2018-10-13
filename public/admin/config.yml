@@ -96,7 +96,6 @@ collections: # A list of collections the CMS should be able to edit
             fields:
               - {label: Carrier, name: title, widget: string}
               - {label: Price per Kg, name: perKg, widget: number}
-              - {label: Base Fee, name: baseFee, widget: number }
       - file: content/regionsAndCarriers/regions.json
         label: Regions
         name: regions
