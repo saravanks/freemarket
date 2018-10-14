@@ -59,7 +59,8 @@ ${tokenString}`
 const onToken = token => {
   const data = {
     token:token,
-    amount : ((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2),
+    // amount : 111,
+    amount : (((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2))*100,
     idempotency_key:uuid(),
   }
   fetch("/.netlify/functions/purchase", {
