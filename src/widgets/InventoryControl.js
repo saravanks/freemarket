@@ -81,7 +81,7 @@ export function InventoryControl(data){
               key={i} 
               item={item} 
               // check that this is the right value by name
-              value={value.get(i).get('value'} 
+              value={value.get(i).get('value')} 
               handleChange={this.handleChange} />
           )}
         </div>
