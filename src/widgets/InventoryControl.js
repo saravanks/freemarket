@@ -67,6 +67,11 @@ export function InventoryControl(data){
     };
     
     render(){
+      console.log(this.props)
+      console.log(JSON.stringify(this.props))
+      console.log(this.props.fields)
+      console.log(JSON.stringify(this.props.fields))
+
       return(
         <div>
           {this.state.inventory.map((item,i)=>
