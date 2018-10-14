@@ -84,7 +84,7 @@ export function InventoryControl(data){
   return InventoryControl
 }
 
-const InventoryLine = ({ forID,classNameWrapper,setActiveStyle,setInactiveStyle,item,handleChange }) =>
+const InventoryLine = ({ value,forID,classNameWrapper,setActiveStyle,setInactiveStyle,item,handleChange }) =>
     <div>
       <div>{item.title}</div>
       <input
