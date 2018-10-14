@@ -25,7 +25,7 @@ class Select extends React.Component{
       <div className='Select-Container'>
         <div className='Select-Main' onClick={()=>this.setState(s=>({open:!s.open})) } >
           <div className='Select-Text'>
-            {!open ? selection!=null ? (options[selection].label?options[selection].label:options[selection]) : title : title}
+            {!open ? selection!=null ? (options[selection] && options[selection].label?options[selection].label:options[selection]) : title : title}
           </div>
           <div className='Select-Icon-Box'>
             <div className='Select-Feather-Circle'>
