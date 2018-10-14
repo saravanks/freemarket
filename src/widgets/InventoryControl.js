@@ -75,30 +75,11 @@ var getTrackedItemsFromProducts=(products=[],inv=[])=>{
   }
   // return the list of objects, of tracked products and options with their titles and quantities
   return inventory.map(title=>{
-    const quantity = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
-    return {title,quantity}
+    const value = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
+    return {title,value}
   })
 }
 
-// const getTrackedItemsFromProducts=(products=[],inv={})=>{
-//   const I = inv.inventory || []
-//   var inventory = []
-//   for(let {title='',options=[],trackInventory=false} of products){
-//     // if the product is tracked, unless all the items stock separate, log the product as is
-//     if(trackInventory && (options.length==0 || options.some(({separateStock=false})=>separateStock==false))){
-//       inventory.push(title)
-//     }
-//     // look for options that stock separate and push them as a string like : 'product(option)'
-//     options.forEach(({separateStock=false,title:optionTitle=''})=>{
-//       separateStock && inventory.push(`${title}(${optionTitle})`)
-//     })
-//   }
-//   // return the list of objects, of tracked products and options with their titles and quantities
-//   return inventory.map(title=>{
-//     const quantity = I.filter(x=>x.title==title).length!=0 ? I.filter(x=>x.title==title)[0].value : 0
-//     return {title,quantity}
-//   })
-// }
 
 export function InventoryControl(data){
   class InventoryControl extends React.Component{
@@ -133,9 +114,9 @@ export function InventoryControl(data){
     }
     getInventory = () =>{
       return Promise.all([
-        fetchInventory(),
         fetchProducts(),  
-      ]).then(([i,p])=>getTrackedItemsFromProducts(p,i))
+        fetchInventory(),
+      ]).then(([p,i])=>getTrackedItemsFromProducts(p,i))
     }
 
     // getInventory = async() => 
@@ -183,6 +164,26 @@ export function InventoryControl(data){
     //   })
     //   return display
     // }
+    // const getTrackedItemsFromProducts=(products=[],inv={})=>{
+//   const I = inv.inventory || []
+//   var inventory = []
+//   for(let {title='',options=[],trackInventory=false} of products){
+//     // if the product is tracked, unless all the items stock separate, log the product as is
+//     if(trackInventory && (options.length==0 || options.some(({separateStock=false})=>separateStock==false))){
+//       inventory.push(title)
+//     }
+//     // look for options that stock separate and push them as a string like : 'product(option)'
+//     options.forEach(({separateStock=false,title:optionTitle=''})=>{
+//       separateStock && inventory.push(`${title}(${optionTitle})`)
+//     })
+//   }
+//   // return the list of objects, of tracked products and options with their titles and quantities
+//   return inventory.map(title=>{
+//     const quantity = I.filter(x=>x.title==title).length!=0 ? I.filter(x=>x.title==title)[0].value : 0
+//     return {title,quantity}
+//   })
+// }
+
     
     handleChange = ({title,value}) => {
       var {inventory} = this.state
@@ -225,7 +226,7 @@ const InventoryLine = ({ forID,classNameWrapper,setActiveStyle,setInactiveStyle,
         type="text"
         id={forID}
         //this is wrong
-        value={item.quantity||0}
+        value={item.value||0}
         onChange={(e)=>handleChange({title:item.title,value:e.target.value})}
         className={classNameWrapper}
         onFocus={setActiveStyle}
