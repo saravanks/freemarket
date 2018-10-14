@@ -90,7 +90,7 @@ const InventoryLine = ({ forID,classNameWrapper,setActiveStyle,setInactiveStyle,
       <input
         type="text"
         id={forID}
-        value={item.value}
+        value={value||0}
         onChange={(e)=>handleChange({title:item.title,value:e.target.value})}
         className={classNameWrapper}
         onFocus={setActiveStyle}
