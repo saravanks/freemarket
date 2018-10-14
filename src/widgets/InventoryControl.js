@@ -72,6 +72,7 @@ export function InventoryControl(data){
       console.log(this.props.fields)
       console.log(JSON.stringify(this.props.fields))
       const {value} = this.props
+      console.log("value=> "+value.get(0))
       return(
         <div>
           {this.state.inventory.map((item,i)=>
@@ -90,6 +91,7 @@ const InventoryLine = ({ value,forID,classNameWrapper,setActiveStyle,setInactive
       <input
         type="text"
         id={forID}
+        //this is wrong
         value={value||0}
         onChange={(e)=>handleChange({title:item.title,value:e.target.value})}
         className={classNameWrapper}
