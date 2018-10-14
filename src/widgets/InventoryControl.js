@@ -71,11 +71,11 @@ export function InventoryControl(data){
       console.log(JSON.stringify(this.props))
       console.log(this.props.fields)
       console.log(JSON.stringify(this.props.fields))
-
+      const {value} = this.props
       return(
         <div>
           {this.state.inventory.map((item,i)=>
-            <InventoryLine {...this.props} key={i} item={item} handleChange={this.handleChange} />
+            <InventoryLine {...this.props} key={i} item={item} value={value[i]} handleChange={this.handleChange} />
           )}
         </div>
       )
