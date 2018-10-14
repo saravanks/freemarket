@@ -127,13 +127,24 @@ export function InventoryControl(data){
       //   })
       // }catch(e){console.log(e)}
     }
-    getInventory = async() =>{
-      let productsP = fetchProducts()
-      let invP = fetchInventory()
-      let products = await productsP
-      let inv = await invP
-      return getTrackedItemsFromProducts(products,inv)
-    }    
+    getInventory = () =>{
+      return Promise.all([
+        fetchInventory(),
+        fetchProducts(),  
+      ]).then(([i,p])=>getTrackedItemsFromProducts(p,i))
+    }
+
+    // getInventory = async() => 
+    //   getTrackedItemsFromProducts(await fetchProducts(), await fetchInventory())
+
+    // getInventory = async() =>{
+    //   let products = fetchProducts()
+    //   let inventory = fetchInventory()
+      // let products = await productsP
+      // let inv = await invP
+      // return getTrackedItemsFromProducts(await products,await inventory)
+      // return getTrackedItemsFromProducts(products,inv)
+    // }    
     // getInventory = async() =>{
     //   let products = await fetchProducts()
     //   let inv = await fetchInventory()
