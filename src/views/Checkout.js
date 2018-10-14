@@ -180,6 +180,8 @@ const getHighestShippingCost = () =>{
   l(`in calculating the shipping cost, these classes are in the cart : ${Array.from(classesInCart)}`)
   Array.from(classesInCart).forEach(classTitle=>{
     const shippingClass = data.shipping.filter(c=>c.title==classTitle)[0]
+    const haveCarrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier()).length>0
+    if(!haveCarrier){return}
     const carrier = shippingClass.carriers.filter(c=>c.title==State.getCarrier())[0]
     const region = carrier.regions.filter(r=>r.title==State.getRegion())[0]
     const weight = getTotalWeight()
