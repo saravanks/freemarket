@@ -171,7 +171,7 @@ const getHighestShippingCost = () =>{
   if(freeShipping()){return 0}
   var highestShippingCost = 0
   if(State.getCart().length<1   ){return 0}
-  if(State.getCarrier() == ' ' ) {return 0}
+  if(State.getCarrier() == ' '  ){return 0}
   if(State.getRegion()   == ' ' ){return 0}
   var classesInCart = new Set([])
   State.getCart().forEach(item=>{
