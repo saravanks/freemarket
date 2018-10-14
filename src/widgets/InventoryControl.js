@@ -109,7 +109,10 @@ export function InventoryControl(data){
     }
     componentDidMount(){
       this.getInventory()
-      .then(inventory=>this.setState({inventory}))
+      .then(inventory=>{
+        console.log(inventory)
+        this.setState({inventory})
+      })
       // try{
       //   fetch( BASE_URL+ "content/products", { method:"GET" })
       //   .then(r=>r.json()).then(r=>r.map(f=>f.path))
@@ -222,7 +225,7 @@ const InventoryLine = ({ forID,classNameWrapper,setActiveStyle,setInactiveStyle,
         type="text"
         id={forID}
         //this is wrong
-        value={item.value||0}
+        value={item.quantity||0}
         onChange={(e)=>handleChange({title:item.title,value:e.target.value})}
         className={classNameWrapper}
         onFocus={setActiveStyle}
