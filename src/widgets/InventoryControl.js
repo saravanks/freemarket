@@ -226,7 +226,7 @@ const InventoryLine = ({ forID,classNameWrapper,setActiveStyle,setInactiveStyle,
         type="text"
         id={forID}
         //this is wrong
-        value={item.value||0}
+        value={item.value||''}
         onChange={(e)=>handleChange({title:item.title,value:e.target.value})}
         className={classNameWrapper}
         onFocus={setActiveStyle}
