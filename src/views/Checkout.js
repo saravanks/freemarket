@@ -227,7 +227,9 @@ class Checkout extends React.Component {
   }
   render(){
     const chargeTax = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].chargeTax
-    const taxRate = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate || 0
+    const taxRate = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate ?
+                    data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate :
+                    0
     if(State.getTransactionComplete()==0)
       {
         // State.setSelection(' ')
@@ -292,7 +294,7 @@ class Checkout extends React.Component {
           <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
           <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p>
           {chargeTax &&
-          <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p>
+          <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate)).toFixed(2)}</p>
           }
           <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p>
         </div>
