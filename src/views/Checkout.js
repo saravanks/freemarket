@@ -17,9 +17,9 @@ const formfields = ['Name','Street Address','City', 'State/Province','ZIP code /
 var thankYouScreen = ''
 
 const onCompletePayment = () =>{
+  State.setTransactionComplete(1)
   thankYouScreen = encodeData('')
   State.reset()
-  State.setTransactionComplete(1)
 }
 
 const freeShipping=()=>{
