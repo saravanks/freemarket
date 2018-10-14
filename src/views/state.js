@@ -7,9 +7,10 @@ class State {
   selection = observable.box(' ')
   fields = observable({})
   carrier = observable.box(' ')
-  region = observable.box(' ')
-  shippingCost = observable.box(0)
   carriers = observable([])
+  region = observable.box(' ')
+  regions = observable([])
+  shippingCost = observable.box(0)
   transactionComplete = observable.box(0)
   
   setField =(field,val)=>this.fields[field]=val
