@@ -129,7 +129,11 @@ const getRegions = () =>{
 const getCarriers = () =>{
   const currentRegion = State.getRegion()
   l(`in region ${currentRegion}`)
-  var carriersNames = data.regionsAndCarriers.filter(x=>x.name=='carriers')[0].carriers.map(x=>x.title)
+  // untested
+  var carriersNames = data.regionsAndCarriers.filter(x=>x.name=='carriers').length!=0 && 
+                      data.regionsAndCarriers.filter(x=>x.name=='carriers')[0].carriers ?
+                      data.regionsAndCarriers.filter(x=>x.name=='carriers')[0].carriers.map(x=>x.title) :
+                      []
   l(`available carriers are : ${carriersNames}`)
   var classesInCartSet = new Set([])
   State.getCart().forEach(item=>{

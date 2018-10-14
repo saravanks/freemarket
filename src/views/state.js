@@ -26,7 +26,7 @@ class State {
     const total= this.getTotal()+this.shippingCost.get()
     return total 
   }
-  getCart=()=>this.cart.slice()
+  getCart=()=>this.cart.slice().filter(x=>x.quantity>0)
   setRegions=(x)=>this.regions.replace(x)
   getRegions=()=>this.regions.slice()
   setCarriers=x=>this.carriers.replace(x)
