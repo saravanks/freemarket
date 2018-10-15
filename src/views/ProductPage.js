@@ -43,12 +43,17 @@ const getCost = (price,options,selection) =>{
 }
 
 const soldOutOption = (p,o) => {
+  if(data.inventory && data.inventory.length && data.inventory[0].inventory){
   // do we track this options separate?
-  return data.products.filter(x=>x.title==p)[0].options.filter(x=>x.title==o)[0].separateStock &&
-  // we have a listing in inventory for it
-  data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')').length>0 &&
-  // is it sold out?
-  data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')')[0].value<1
+    return data.products.filter(x=>x.title==p)[0].options.filter(x=>x.title==o)[0].separateStock &&
+    // we have a listing in inventory for it
+    data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')').length>0 &&
+    // is it sold out?
+    data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')')[0].value<1
+  }else{
+    console.log('couldnt find the inventory list something is wrong with your inventory')
+    return true
+  }
 }
 const soldOut = p => {
   // do we track this products stock?
@@ -139,10 +144,10 @@ class ProductPage extends React.Component{
                 onClick={(e)=>{
                   if(trackInventory || options.some(o=>o.separateStock)){
                     if(this.state.soldOut){
-                      setTimeout(()=>window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
+                      setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
                       e.preventDefault()
                     } else if (isAlreadyInCart(title)) {
-                      setTimeout(()=> window.alert('Sorry this item is SOLD OUT!'),200)
+                      setTimeout(()=> window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
                       e.preventDefault()
                     } else if(noSelectionMade(options)){
                       setTimeout(()=>window.alert('Please select your option!'),200)
