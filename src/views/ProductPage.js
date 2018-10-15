@@ -138,15 +138,15 @@ class ProductPage extends React.Component{
                 className="Add-to-cart"
                 onClick={(e)=>{
                   if(trackInventory || options.some(o=>o.separateStock)){
-                    if(isAlreadyInCart(title)){
-                      e.preventDefault()
+                    if(this.state.soldOut){
                       setTimeout(()=>window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
-                    } else if(this.state.soldOut) {
                       e.preventDefault()
+                    } else if (isAlreadyInCart(title)) {
                       setTimeout(()=> window.alert('Sorry this item is SOLD OUT!'),200)
-                    } else if(noSelectionMade(options)){
                       e.preventDefault()
+                    } else if(noSelectionMade(options)){
                       setTimeout(()=>window.alert('Please select your option!'),200)
+                      e.preventDefault()
                     }else{
                       State.ATC({...this.props.fields,price:this.state.cost},String(State.getSelection()))
                     }
