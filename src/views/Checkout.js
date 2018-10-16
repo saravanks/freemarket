@@ -232,9 +232,11 @@ class Checkout extends React.Component {
   }
   render(){
     const chargeTax = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].chargeTax
-    const taxRatePercent = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate ?
-                    data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate :
-                    0
+    const taxRatePercent =  data.regionsAndCarriers.filter(x=>x.name=='settings').length &&
+                            data.regionsAndCarriers.filter(x=>x.name=='settings')[0].chargeTax &&
+                            data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate ?
+                            data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate :
+                            0
     const taxRate = taxRatePercent/100
     if(State.getTransactionComplete()==0)
       {
