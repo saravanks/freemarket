@@ -5,12 +5,13 @@ var request = require('request');
 
 function calculateNewInventory(inventory,cart){
   var optionizedCart = cart.map(cartItem=>{
-    const {options=[],selection='',title=''} = cartItem
-    if(options.filter(o=>o.title==selection).length && options.filter(o=>o.title==selection)[0].separateStock){
+    const {options=[],selected='',title=''} = cartItem
+    console.log(JSON.stringify(cartItem))
+    if(options.filter(o=>o.title==selected).length && options.filter(o=>o.title==selected)[0].separateStock){
       return {
         options:options,
-        selection:selection, 
-        title: title + '(' + options.filter(i=>i.title==selection)[0].title + ')'
+        selected:selected, 
+        title: title + '(' + selected + ')'
       }
     }else{
       return cartItem
@@ -37,7 +38,7 @@ exports.handler = function(event, context, callback) {
   getInventory(cart)
 }
 
-function getInventory(changes){
+function getInventory(cart){
   console.log('running')
   var getOptions = {
     //this address is wrong now
@@ -57,7 +58,7 @@ function getInventory(changes){
     var buf = new Buffer(data.content, 'base64').toString();
     var inventory = JSON.parse(buf)
     // inventory.inventory ????
-    var newInventory = calculateNewInventory(inventory.inventory,changes)
+    var newInventory = calculateNewInventory(inventory.inventory,cart)
     setInventory(sha,newInventory)
   }
   request(getOptions, getCallback);
