@@ -5,13 +5,14 @@ var request = require('request');
 
 function calculateNewInventory(inventory,cart){
   var optionizedCart = cart.map(cartItem=>{
-    const {options=[],selected='',title=''} = cartItem
+    const {options=[],selected='',title='',quantity=0} = cartItem
     console.log(JSON.stringify(cartItem))
     if(options.filter(o=>o.title==selected).length && options.filter(o=>o.title==selected)[0].separateStock){
       return {
         options:options,
         selected:selected, 
-        title: title + '(' + selected + ')'
+        title: title + '(' + selected + ')',
+        quantity:quantity
       }
     }else{
       return cartItem
