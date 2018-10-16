@@ -3,29 +3,37 @@ const UP = process.env.GITHUB_PASSWORD
 
 var request = require('request');
 
-function calculateNewStock(stock,changes){
-  var newStock = [...stock]
-  for(let change of changes){
-    newStock=newStock.map(stock=>{
-      if(stock.title==change.title){
+function calculateNewInventory(inventory,cart){
+  var optionizedCart = cart.map(cartItem=>{
+    const {options=[],selection='',title=''} = cartItem
+    if(options.filter(i=>i.title==selection).length && options.filter(i=>i.title==selection)[0].separateStock){
+      return {...cartItem, title: title+`(${options.filter(i=>i.title==selection)[0].title})`}
+    }else{
+      return cartItem
+    }
+  })
+  var newInventory=inventory.slice()
+  for(let cartItem of optionizedCart){
+    newInventory=newInventory.map(item=>{
+      if(item.title==cartItem.title){
         return {
-          title:stock.title,
-          value:stock.value-change.quantity
+          title:item.title,
+          value:item.value-cartItem.quantity
           }
       }else{
-        return stock
+        return item
       }
     })
   }
-  return newStock
+  return newInventory
 }
 
 exports.handler = function(event, context, callback) {
   var cart = JSON.parse(event.body)
-  getStock(cart)
+  getInventory(cart)
 }
 
-function getStock(changes){
+function getInventory(changes){
   console.log('running')
   var getOptions = {
     //this address is wrong now
@@ -43,17 +51,17 @@ function getStock(changes){
     const data = JSON.parse(body)
     var sha = data.sha
     var buf = new Buffer(data.content, 'base64').toString();
-    var stock = JSON.parse(buf)
+    var inventory = JSON.parse(buf)
     // inventory.inventory ????
-    var newStock = calculateNewStock(stock.inventory,changes)
-    setStock(sha,newStock)
+    var newInventory = calculateNewInventory(inventory.inventory,changes)
+    setInventory(sha,newInventory)
   }
   request(getOptions, getCallback);
 }
 
-function setStock(sha,newStock){
+function setInventory(sha,newInventory){
 
-  var newFileContent = new Buffer(JSON.stringify({inventory:newStock})).toString("base64");
+  var newFileContent = new Buffer(JSON.stringify({inventory:newInventory})).toString("base64");
 
   var options = {
     url: `https://api.github.com/repos/${UN}/freemarket/contents/content/inventory/inventory.json`,

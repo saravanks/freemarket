@@ -15,6 +15,7 @@ const toDollars = x => parseFloat(x).toFixed(2)
 const getInventory = title =>{
   //there exists an inventory file
   if(
+    data.inventory && data.inventory.length &&
     data.inventory.filter(x=>x.name=='inventory').length>0 &&
     // there exists an entry for this item
     data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title).length>0

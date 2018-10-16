@@ -3,10 +3,8 @@
 // works perfect, cannot crash :)
 var f =_=>[_].filter(_=>_).flatMap(({products=[]}) => products.filter(_=>_)
 .flatMap( ({ options=[], title='', trackInventory=false }) => [
-  ...options.filter(_=>_).flatMap(({ separateStock=false, title:optionTitle='' }) =>
-    separateStock?`${title}(${optionTitle})`:[]),
-  ...trackInventory && (!options.length || options.some(o=>o.separateStock==false)) ?
-    [title] : []
+  ...options.filter(_=>_).flatMap(({ separateStock=false, title:optionTitle='' }) => separateStock?`${title}(${optionTitle})`:[]),
+  ...trackInventory && (!options.length || options.some(o=>o.separateStock==false)) ? [title] : []
 ]))
 
 
