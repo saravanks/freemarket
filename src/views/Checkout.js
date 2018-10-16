@@ -60,7 +60,7 @@ const onToken = token => {
   const data = {
     token:token,
     // amount : 111,
-    amount : (((getSubtotal()+getHighestShippingCost())*1.15).toFixed(2))*100,
+    amount : Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
     idempotency_key:uuid(),
   }
   fetch("/.netlify/functions/purchase", {
@@ -323,7 +323,7 @@ class Checkout extends React.Component {
         <div>
         <div>thanks very much for your order, your details are below</div>
         <div>{thankYouScreen}</div>
-        <Link to='/store'><div className='Checkout-Back'> Return to Shop </div></Link>
+        <Link to='/store'><div onClick={()=>State.setTransactionComplete(0)} className='Checkout-Back'> Return to Shop </div></Link>
         </div>
       )
     }
