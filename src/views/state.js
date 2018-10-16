@@ -49,7 +49,7 @@ class State {
     this.carrier.set(' ')
     this.region.set(' ')
     this.shippingCost.set(0)
-    transactionComplete.set(0)
+    this.transactionComplete.set(0)
   }
 }
 export default State = new State()
