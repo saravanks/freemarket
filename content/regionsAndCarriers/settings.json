@@ -1,6 +1,6 @@
 {
   "freeShipping": true,
   "above": "199",
-  "chargeTax": true,
+  "chargeTax": false,
   "taxRate": "11"
 }
