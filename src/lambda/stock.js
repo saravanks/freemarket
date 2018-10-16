@@ -6,8 +6,12 @@ var request = require('request');
 function calculateNewInventory(inventory,cart){
   var optionizedCart = cart.map(cartItem=>{
     const {options=[],selection='',title=''} = cartItem
-    if(options.filter(i=>i.title==selection).length && options.filter(i=>i.title==selection)[0].separateStock){
-      return {...cartItem, title: title+`(${options.filter(i=>i.title==selection)[0].title})`}
+    if(options.filter(o=>o.title==selection).length && options.filter(o=>o.title==selection)[0].separateStock){
+      return {
+        options:options,
+        selection:selection, 
+        title: title + '(' + options.filter(i=>i.title==selection)[0].title + ')'
+      }
     }else{
       return cartItem
     }
