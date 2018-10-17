@@ -28,6 +28,7 @@
 
 .Checkout-Text{
   width:250px;
+  text-align: justify;
   /* margin:10px; */
 }
 
@@ -41,6 +42,7 @@
 }
 .Checkout-Register{
   text-align: center;
+  border: 1px solid black;
 }
 .Checkout-Stripe-Container{
   position:relative;
@@ -59,6 +61,11 @@
   z-index: 1000;
 }
 
+.Checkout-Table{
+  margin: 10 7 15 7;
+  font-size: 13px
+}
+
 input{
   width: 250px;
   padding:10px;
@@ -73,3 +80,7 @@ form{
 p{
   margin-bottom: 8px;
 }
+
+/* span{
+  margin: 5px;
+} */

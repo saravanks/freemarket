@@ -298,13 +298,52 @@ class Checkout extends React.Component {
             />
           </div>
         </form>
-        <div className="Checkout-Register">
-          <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
-          <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p>
+        <div className="Checkout-Register" style={{width:'250px'}}>
+          {/* <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
+          <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p> */}
+          {/* <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate)).toFixed(2)}</p> */}
+          <table style={{width:'100%'}}>
+            <tr style={{width:'100%'}}>
+              <td style={{width:'100%'}}>
+                <span className="Checkout-Table" style={{float:"left"}}>subtotal</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + (getSubtotal()).toFixed(2)}</span>
+              </td>
+            </tr>
+            <tr style={{width:'100%'}}>
+              <td style={{width:'100%'}}>
+                <span className="Checkout-Table" style={{float:"left"}}>shipping</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + (getHighestShippingCost()).toFixed(2)}</span>
+              </td>              
+            </tr>
           {chargeTax &&
-          <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate)).toFixed(2)}</p>
+            <tr style={{width:'100%'}}>
+              <td style={{width:'100%'}}>
+                <span className="Checkout-Table" style={{float:"left"}}>taxes</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + ((getSubtotal()+getHighestShippingCost())*(taxRate)).toFixed(2)}</span>
+              </td>              
+            </tr>
           }
-          <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p>
+            <tr style={{width:'100%'}}>
+              <td style={{width:'100%'}}>
+                <span className="Checkout-Table" style={{float:"left"}}>total</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</span>
+              </td>              
+            </tr>
+          
+          {/* <tr><td style={{position:'relative`'}}>
+            <div style={{position:'absolute',textAlign:'left'}}>{"subtotal"}</div>
+            <div style={{position:'absolute',textAlign:'right'}}>{"$" + (getSubtotal()).toFixed(2)}</div>
+          </td></tr>
+          <td style={{position:'relative`'}}>
+            <div  style={{position:'absolute',textAlign:'left'}}>{"total test"}</div>
+            <div  style={{position:'absolute',textAlign:'right'}}>{"total test"}</div>
+          </td>
+          <td style={{position:'relative`'}}>
+            <div  style={{position:'absolute',textAlign:'left'}}>{"total test"}</div>
+            <div  style={{position:'absolute',textAlign:'right'}}>{"total test"}</div>
+          </td> */}
+          </table>
+          {/* <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p> */}
         </div>
         <div className="Checkout-Stripe-Container">
           <div 
@@ -315,7 +354,13 @@ class Checkout extends React.Component {
               alert('Please Fill Out All The Fields')
             }}
           />
-          <StripeCheckout token={onToken} stripeKey={PUBLIC_KEY}/>  
+          <div style={{filter:'grayscale(80%)'}}>
+            <StripeCheckout 
+              style={{width:'250px',margin:'0px'}}
+              token={onToken} 
+              stripeKey={PUBLIC_KEY}
+            />
+          </div>
         </div>
       </div>
       )
