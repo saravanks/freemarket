@@ -309,6 +309,7 @@ collections: # A list of collections the CMS should be able to edit
           - {label: Site Title, name: siteTitle, widget: string}
           - {label: Site Url, name: siteUrl, widget: string, required: false}
           - {label: Site Description, name: siteDescription, widget: text, required: false}
+          - {label: Site Footer, name: siteFooterText, widget: text, required: false}
           - label: Social Media Card
             name: socialMediaCard
             widget: object

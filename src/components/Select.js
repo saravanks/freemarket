@@ -39,7 +39,7 @@ class Select extends React.Component{
               <div 
                 key={i}
                 className='Select-Dropdown' 
-                style={{top:(i+1)*30+'px',backgroundColor:i==selection?'grey':'white'}}
+                style={{top:(i+1)*30+'px',backgroundColor:i==selection?'lightGrey':'white'}}
                 onClick={()=>{
                   this.setState({selection:i,open:false});
                   onChange(options[i])

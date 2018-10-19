@@ -230,7 +230,7 @@ class App extends Component {
             })}
             <Route render={() => <NoMatch siteUrl={siteUrl} />} />
           </Switch>
-          <Footer />
+          <Footer text={data.settings.filter(x=>x.name=='global')[0].siteFooterText} />
         </div>
       </Router>
     )

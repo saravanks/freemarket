@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from '../components/Link'
 import { slugify } from '../util/url'
-import './Store-Page.css';
+import './Store.css';
 
 export default ({data}) => { 
   const {products=[]} = data

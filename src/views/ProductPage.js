@@ -23,17 +23,18 @@ const getSmallImages = (images) => {
   return smallImages
 }
 
-const isAlreadyInCart = title =>{
-  const selected = State.getSelection()
-  const cart = State.getCart()
-  var isInCart = false
-  cart.forEach(item=>{
-    if(item.title==title && item.selected==selected){
-      isInCart = true
-    }
-  })
-  return isInCart
-}
+// const isAlreadyInCart = title =>{
+//   const selected = State.getSelection()
+//   const cart = State.getCart()
+//   var isInCart = false
+//   cart.forEach(item=>{
+//     if(item.title==title && item.selected==selected){
+//       isInCart = true
+//     }
+//   })
+//   return isInCart
+// }
+const isAlreadyInCart = title => State.getCart().some(x=>x.title==title)
 
 const getCost = (price,options,selection) =>{
   if(options.filter(o=>o.title==selection).length>0){
@@ -55,20 +56,16 @@ const soldOutOption = (p,o) => {
     return true
   }
 }
-const soldOut = p => {
+const soldOut = p => 
   // do we track this products stock?
-  return data.products.filter(x=>x.title==p)[0].trackInventory &&
+  data.products.filter(x=>x.title==p)[0].trackInventory &&
   // do we have a listing for it in inventory file?
   data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p).length>0 &&
   // is it sold out?
   data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p)[0].value<1
-}
-const noSelectionMade=options=>{
-  if(options.length>0 && State.getSelection() == ''){
-    return true
-  }
-  return false
-}
+
+const noSelectionMade=options=> options.length>0 && State.getSelection() == ''
+  
 
 
 class ProductPage extends React.Component{
@@ -80,10 +77,22 @@ class ProductPage extends React.Component{
     }
   }
   componentDidMount(){
-    const {title,options=[]}=this.props.fields
-    if(soldOut(title) && options.every(o=>soldOutOption(title,o.title))){
-      this.setState({soldOut:true})
+    const {title='',options=[],trackInventory=false}=this.props.fields
+    // if we track all the options together
+    if(options.length==0 || options.filter(o=>o.separateStock).length==0){
+      this.setState({soldOut:soldOut(title)})
+    }else{
+    // if we track some items separate, it's sold out only if all are sold out
+      const itemsTrackedSoldOut = []
+      if(trackInventory){itemsTrackedSoldOut.push(soldOut(title))}
+      options.forEach(o=>{
+        if(o.separateStock){itemsTrackedSoldOut.push(soldOutOption(title,o.title))}
+      })
+      this.setState({soldOut:itemsTrackedSoldOut.every(i=>i)})
     }
+    // if(soldOut(title) && options.every(o=>soldOutOption(title,o.title))){
+    //   this.setState({soldOut:true})
+    // }
     State.setSelection('')
 
   }
@@ -173,6 +182,5 @@ class ProductPage extends React.Component{
     )
   }
 }
-
 
 export default ProductPage

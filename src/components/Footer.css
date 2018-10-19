@@ -1,4 +1,5 @@
 .Footer {
   padding: 3rem 0;
   background: var(--lightGrey);
+  font-size: 12px;
 }
