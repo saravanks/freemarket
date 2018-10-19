@@ -25,9 +25,10 @@ const sendEmail = address =>{
     method: "POST",
     body: JSON.stringify({address})
   })
-  .then(response => {
-    if(response!='success'){
-      console.error(response)
+  .then(r=>r.json()).then(j=>{
+    const data = JSON.parse(j)
+    if(data.body!='success'){
+      console.error(data.body)
     }
   })
 }

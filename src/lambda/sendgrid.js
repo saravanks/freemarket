@@ -14,7 +14,7 @@ exports.handler = function(event, context, callback) {
     callback(null, {
       statusCode,
       headers,
-      body: ''
+      body: 'something wrong at the top'
     });
   }
 
