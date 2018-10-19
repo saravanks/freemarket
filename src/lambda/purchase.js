@@ -62,7 +62,7 @@ exports.handler = function(event, context, callback) {
       callback(null, {
         statusCode,
         headers,
-        body: JSON.stringify({status,email:data.token.email})
+        body: JSON.stringify({status,email:data.token.email,err})
       });
 
     }

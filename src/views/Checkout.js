@@ -22,14 +22,16 @@ const onCompletePayment = () =>{
   State.reset()
 }
 
-const sendEmail = () =>{
+const sendEmail = address =>{
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
-    body: JSON.stringify('')
+    body: JSON.stringify({address})
   })
-  // .then(response => {
-  //   response.json().then(data => {
-  // })})
+  .then(response => {
+    if(response!='success'){
+      console.error(response)
+    }
+  })
 }
 
 const freeShipping=()=>{
@@ -66,31 +68,51 @@ stripe payment meta-data:
 ${tokenString}`
 }
 
+reportCartToInventory=()=>{
+  fetch("/.netlify/functions/stock", {
+    method: "POST",
+    body: JSON.stringify(State.getCart())
+  })
+}
+
 const onToken = token => {
   const data = {
-    token:token,
-    // amount : 111,
-    amount : Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
+    token,
+    amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
     idempotency_key:uuid(),
   }
   fetch("/.netlify/functions/purchase", {
     method: "POST",
     body: JSON.stringify(data)
-  }).then(response => {
-    response.json().then(data => {
-      if(data.status=='succeeded'){
-        console.log(`payment was successful`);
-        // call stock function
-        // this is now broken from the overhail
-        fetch("/.netlify/functions/stock", {
-          method: "POST",
-          body: JSON.stringify(State.getCart())
-        })
-        // console.log(State.getCart())
-        submit(encodeData(token))
-      }
-    });
-  });
+  })
+  .then(r=>r.json()).then(data=>{
+    if(data.status=='succeeded'){
+      console.log(`payment was successful`);
+      // call stock.js
+      reportCartToInventory()
+      // invoke form submit
+      submit(encodeData(token))
+      // invoke sendGrid
+      sendEmail(token.email)
+      // update UI to thanks message
+      onCompletePayment()
+    }else{
+      console.log(data.status,data.err)
+    }
+  })
+  .catch(error=>console.log(error.toString()))
+  // .then(response => {
+  //   response.json().then(data => {
+  //     if(data.status=='succeeded'){
+  //       console.log(`payment was successful`);
+  //       fetch("/.netlify/functions/stock", {
+  //         method: "POST",
+  //         body: JSON.stringify(State.getCart())
+  //       })
+  //       submit(encodeData(token))
+  //     }
+  //   });
+  // });
 }
 const encode = (data) => {
   return Object.keys(data)
@@ -104,8 +126,7 @@ const submit = (data) => {
     body: encode({ "form-name": "purchase", "data":data })
   })
     .then(() =>{
-      alert("Success!")
-      onCompletePayment()
+      alert("form submit Success!")
     })
     .catch(error => alert(error));
 };
