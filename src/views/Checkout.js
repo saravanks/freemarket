@@ -68,7 +68,7 @@ stripe payment meta-data:
 ${tokenString}`
 }
 
-reportCartToInventory=()=>{
+const reportCartToInventory=()=>{
   fetch("/.netlify/functions/stock", {
     method: "POST",
     body: JSON.stringify(State.getCart())
