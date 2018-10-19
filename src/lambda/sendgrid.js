@@ -16,6 +16,7 @@ exports.handler = function(event, context, callback) {
       headers,
       body: JSON.stringify({status:'something wrong at the top'})
     });
+    return
   }
 
   const data = JSON.parse(event.body);

@@ -25,8 +25,7 @@ const sendEmail = address =>{
     method: "POST",
     body: JSON.stringify({address:address})
   })
-  .then(r=>r.json()).then(j=>{
-    const data = JSON.parse(j)
+  .then(r=>r.json()).then(data=>{
     if(data.status!='success'){
       console.error(data.status)
     }
@@ -379,7 +378,7 @@ class Checkout extends React.Component {
         </div>
         <div 
           style={{height:'30px',width:'200px',}}
-          onClick={()=>sendEmail()}  
+          onClick={()=>sendEmail('youthclubrecords@gmail.com')}  
         >
           email
         </div>
