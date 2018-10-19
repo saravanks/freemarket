@@ -22,6 +22,15 @@ const onCompletePayment = () =>{
   State.reset()
 }
 
+const sendEmail = () =>{
+  fetch("/.netlify/functions/sendgrid", {
+    method: "POST",
+    body: JSON.stringify('')
+  }).then(response => {
+    response.json().then(data => {
+  })})
+}
+
 const freeShipping=()=>{
   const freeShippingObject = data.regionsAndCarriers.filter(x=>x.name=='settings')[0]
   // if user hasnt set this up right, or at all
@@ -344,6 +353,12 @@ class Checkout extends React.Component {
           </td> */}
           </table>
           {/* <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p> */}
+        </div>
+        <div 
+          style={{height:'30px',width:'200px',}}
+          onClick={()=>sendEmail()}  
+        >
+          email
         </div>
         <div className="Checkout-Stripe-Container">
           <div 
