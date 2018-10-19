@@ -20,7 +20,7 @@ exports.handler = function(event, context, callback) {
   }
 
   const data = JSON.parse(event.body);
-
+  console.log('data.address is=> '+data.address)
   const msg = {
     to: data.address,
     from: process.env.MY_EMAIL_ADDRESS,

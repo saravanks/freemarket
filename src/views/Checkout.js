@@ -20,7 +20,7 @@ const onCompletePayment = () =>{
   State.reset()
 }
 
-const sendEmail = address =>{
+const sendEmail = address => {
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
     body: JSON.stringify({address:address})
@@ -87,11 +87,11 @@ const onToken = token => {
   .then(r=>r.json()).then(data=>{
     if(data.status=='succeeded'){
       console.log(`payment was successful`);
-      // call stock.js
-      reportCartToInventory()
-      // invoke form submit
-      submit(encodeData(token))
-      // invoke sendGrid
+      // // call stock.js
+      // reportCartToInventory()
+      // // invoke form submit
+      // submit(encodeData(token))
+      // // invoke sendGrid
       sendEmail(token.email)
       console.log('email on token=> '+token.email)
       // update UI to thanks message
