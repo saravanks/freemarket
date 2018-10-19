@@ -26,9 +26,10 @@ const sendEmail = () =>{
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
     body: JSON.stringify('')
-  }).then(response => {
-    response.json().then(data => {
-  })})
+  })
+  // .then(response => {
+  //   response.json().then(data => {
+  // })})
 }
 
 const freeShipping=()=>{
