@@ -23,12 +23,12 @@ const onCompletePayment = () =>{
 const sendEmail = address =>{
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
-    body: JSON.stringify({address})
+    body: JSON.stringify({address:address})
   })
   .then(r=>r.json()).then(j=>{
     const data = JSON.parse(j)
-    if(data.body!='success'){
-      console.error(data.body)
+    if(data.status!='success'){
+      console.error(data.status)
     }
   })
 }

@@ -14,7 +14,7 @@ exports.handler = function(event, context, callback) {
     callback(null, {
       statusCode,
       headers,
-      body: 'something wrong at the top'
+      body: JSON.stringify({status:'something wrong at the top'})
     });
   }
 
@@ -34,14 +34,14 @@ exports.handler = function(event, context, callback) {
     callback(null, {
       statusCode,
       headers,
-      body: 'success'
+      body: JSON.stringify({status:'success'})
     });
   })
   .catch(error=>{
     callback(null, {
       statusCode,
       headers,
-      body: error.toString()
+      body: JSON.stringify({status:error.toString()})
     });
   })
 }
