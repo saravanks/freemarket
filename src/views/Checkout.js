@@ -13,12 +13,10 @@ import {PUBLIC_KEY} from '../PUBLIC_KEY.js'
 const l = x =>console.log(x)
 
 const formfields = ['Name','Street Address','City', 'State/Province','ZIP code / Postal Code', 'Country']
-
-var thankYouScreen = ''
+var purchaseDataString = ''
 
 const onCompletePayment = () =>{
   State.setTransactionComplete(1)
-  thankYouScreen = encodeData('')
   State.reset()
 }
 
@@ -59,13 +57,14 @@ date : ${Date()}
   `
   const userData = userDataStrings.join('\n')
   const tokenString = JSON.stringify(token||'',null,3).replace(/[^\w\s:_@.-]/g,'')
-  return`
+  purchaseDataString = `
 ${userData}
 ${purchaseInfo}
 ${cartInfo}
 
 stripe payment meta-data:
 ${tokenString}`
+  return purchaseDataString
 }
 
 const reportCartToInventory=()=>{
@@ -94,6 +93,7 @@ const onToken = token => {
       submit(encodeData(token))
       // invoke sendGrid
       sendEmail(token.email)
+      console.log('email on token=> '+token.email)
       // update UI to thanks message
       onCompletePayment()
     }else{
@@ -407,7 +407,7 @@ class Checkout extends React.Component {
       return(
         <div>
         <div>thanks very much for your order, your details are below</div>
-        <div>{thankYouScreen}</div>
+        <div>{purchaseDataString}</div>
         <Link to='/store'><div onClick={()=>State.setTransactionComplete(0)} className='Checkout-Back'> Return to Shop </div></Link>
         </div>
       )
