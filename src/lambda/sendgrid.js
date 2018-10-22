@@ -21,11 +21,12 @@ exports.handler = function(event, context, callback) {
   const data = JSON.parse(event.body);
   console.log('data.address is=> '+data.address)
   const msg = {
-    to: data.address,
+    to: [data.address, process.env.MY_EMAIL_ADDRESS],
     from: process.env.MY_EMAIL_ADDRESS,
     subject: 'Order Confirmation',
-    text: data.message.replace('/n','<br>'),
-    html: data.message.replace('/n','<br>'),
+    text: 'text part',
+    // text: data.message.replace('\n','<br>'),
+    html: data.message.replace('\n','<br>'),
   };
   
   sgMail.send(msg)
