@@ -26,7 +26,7 @@ exports.handler = function(event, context, callback) {
     subject: 'Order Confirmation',
     text: 'text part',
     // text: data.message.replace('\n','<br>'),
-    html: data.message.replace('\n','<br>'),
+    html: data.message.replace(/\n/g, "<br>"),
   };
   
   sgMail.send(msg)

@@ -21,6 +21,7 @@ const onCompletePayment = () =>{
 }
 
 const sendEmail = (address,message) => {
+  console.log('message=>'+JSON.stringify({message:message}))
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
     body: JSON.stringify({address,message})
@@ -381,7 +382,7 @@ class Checkout extends React.Component {
         </div>
         <div 
           style={{height:'30px',width:'200px',}}
-          onClick={()=>State.setTransactionComplete(1)}  
+          onClick={()=>sendEmail('test',encodeData({}))}  
         >
           email
         </div>
