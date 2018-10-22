@@ -24,7 +24,7 @@ exports.handler = function(event, context, callback) {
     to: data.address,
     from: process.env.MY_EMAIL_ADDRESS,
     subject: 'Order Confirmation',
-    text: data.message,
+    text: data.message.replace('/n','<br>'),
     // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
   };
   
