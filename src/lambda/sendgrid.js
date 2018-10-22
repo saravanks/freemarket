@@ -25,7 +25,7 @@ exports.handler = function(event, context, callback) {
     from: process.env.MY_EMAIL_ADDRESS,
     subject: 'Order Confirmation',
     text: data.message,
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
   };
   
   sgMail.send(msg)
