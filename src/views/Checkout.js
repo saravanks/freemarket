@@ -20,10 +20,10 @@ const onCompletePayment = () =>{
   State.reset()
 }
 
-const sendEmail = address => {
+const sendEmail = (address,message) => {
   fetch("/.netlify/functions/sendgrid", {
     method: "POST",
-    body: JSON.stringify({address:address})
+    body: JSON.stringify({address,message})
   })
   .then(r=>r.json()).then(data=>{
     if(data.status!='success'){
@@ -44,7 +44,7 @@ const freeShipping=()=>{
   return getSubtotal() > freeShippingObject.above
 }
 
-const encodeData=token=>{
+const encodeData = token => {
   const relevantFieldsFromItem = ['title','quantity','price','options']
   const purchaseInfo    = '\npurchases: ' + State.cart.map((item,i)=>`\n\n#${i+1} :` + 
     relevantFieldsFromItem
@@ -95,7 +95,7 @@ const onToken = token => {
       // // invoke form submit
       // submit(encodeData(token))
       // // invoke sendGrid
-      sendEmail(token.email)
+      sendEmail(token.email,encodeData(token))
       console.log('email on token=> '+token.email)
       // update UI to thanks message
       onCompletePayment()
