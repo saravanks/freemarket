@@ -46,7 +46,10 @@ const freeShipping=()=>{
 
 const encodeData=token=>{
   const relevantFieldsFromItem = ['title','quantity','price','options']
-  const purchaseInfo    = '\npurchases: ' + State.cart.map((item,i)=>`\n\n#${i+1} :` + relevantFieldsFromItem.map(field=>`\n${field}:${item[field]}`))
+  const purchaseInfo    = '\npurchases: ' + State.cart.map((item,i)=>`\n\n#${i+1} :` + 
+    relevantFieldsFromItem
+    .map(field=>field=='options'?'selected':field)
+    .map(field=>`\n${field}:${item[field]}`))
   const userDataStrings = Object.keys(State.fields).map(name=>`${name} : ${State.fields[name]}`)
   const cartInfo = `
 subtotal : $${(getSubtotal()).toFixed(2)}
@@ -378,7 +381,7 @@ class Checkout extends React.Component {
         </div>
         <div 
           style={{height:'30px',width:'200px',}}
-          onClick={()=>sendEmail('youthclubrecords@gmail.com')}  
+          onClick={()=>State.setTransactionComplete(1)}  
         >
           email
         </div>
@@ -406,8 +409,8 @@ class Checkout extends React.Component {
     {
       return(
         <div>
-        <div>thanks very much for your order, your details are below</div>
-        <div>{purchaseDataString}</div>
+        <div className='Checkout-Complete-Text'>Thanks very much for your order! Your payment details are below</div>
+        <div className='Checkout-Complete-Text'>{purchaseDataString}</div>
         <Link to='/store'><div onClick={()=>State.setTransactionComplete(0)} className='Checkout-Back'> Return to Shop </div></Link>
         </div>
       )

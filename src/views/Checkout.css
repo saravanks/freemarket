@@ -11,6 +11,11 @@
   font-size: 15px;
 }
 
+.Checkout-Complete-Text{
+  white-space: pre;
+  font-size: 12px;
+  margin:10px;
+}
 
 .Checkout-Region-Dropdown{
   width:250px;
