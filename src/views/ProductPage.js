@@ -34,7 +34,7 @@ const getSmallImages = (images) => {
 //   })
 //   return isInCart
 // }
-const isAlreadyInCart = title => State.getCart().some(x=>x.title==title)
+const isAlreadyInCart = title => State.getCart().some(x=>x.title==title && x.selected==State.getSelection())
 
 const getCost = (price,options,selection) =>{
   if(options.filter(o=>o.title==selection).length>0){

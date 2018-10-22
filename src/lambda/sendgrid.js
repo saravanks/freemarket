@@ -8,7 +8,6 @@ const headers = {
 };
 
 
-
 exports.handler = function(event, context, callback) {
   if(event.httpMethod !== 'POST' || !event.body) {
     callback(null, {
@@ -29,7 +28,6 @@ exports.handler = function(event, context, callback) {
     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
   };
   
-
   sgMail.send(msg)
   .then(()=>{
     callback(null, {
