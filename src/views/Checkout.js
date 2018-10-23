@@ -14,6 +14,8 @@ import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
 
 const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
 
+var history = undefined
+
 const l = x =>console.log(x)
 
 const formfields = ['Name','Street Address','City', 'State/Province','ZIP code / Postal Code', 'Country']
@@ -68,7 +70,7 @@ const checkDBForInventory = () => {
     console.log('items to remove :' + itemsToRemove)
     if(itemsToRemove.length > 0){
       alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
-      this.props.history.push('/store')
+      history.push('/store')
     } else {
     return true
     }
@@ -314,6 +316,7 @@ class Checkout extends React.Component {
     State.setSelection(' ')
     State.setCarrier(' ')
     State.setRegion(' ')
+    history = this.props.history
   }
   render(){
     const chargeTax = data.regionsAndCarriers.filter(x=>x.name=='settings')[0].chargeTax
