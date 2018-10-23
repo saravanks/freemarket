@@ -34,9 +34,9 @@ const fetchInventory = () =>{
 }
 
 const checkDBForInventory = () => {
-  fetchInventory().then(inv=>{
+  var itemsToRemove = []
+  return fetchInventory().then(inv=>{
     console.log('inventory : ' + inv)
-    var itemsToRemove = []
     State.getCart().forEach((item,index)=>{
       var inventoryName = ''
       // if something is selected, and it is tracked separate, add to list as its stockName
@@ -127,48 +127,38 @@ const reportCartToInventory=()=>{
 const onToken = token => {
   // look at github version of inventory.json to see if everything in the cart is actually still available
   // and modify the cart, then return to '/cart' if not. 
-  if(checkDBForInventory()){
-
-    const data = {
-      token,
-      amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
-      idempotency_key:uuid(),
-    }
-    fetch("/.netlify/functions/purchase", {
-      method: "POST",
-      body: JSON.stringify(data)
-    })
-    .then(r=>r.json()).then(data=>{
-      if(data.status=='succeeded'){
-        console.log(`payment was successful`);
-        // // call stock.js
-        // reportCartToInventory()
-        // // invoke form submit
-        // submit(encodeData(token))
-        // // invoke sendGrid
-        sendEmail(token.email,encodeData(token))
-        console.log('email on token=> '+token.email)
-        // update UI to thanks message
-        onCompletePayment()
-      }else{
-        console.log(data.status,data.err)
+  checkDBForInventory().then(allGood=>{
+    if(allGood){
+      const data = {
+        token,
+        amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
+        idempotency_key:uuid(),
       }
-    })
-    .catch(error=>console.log(error.toString()))
-    // .then(response => {
-    //   response.json().then(data => {
-    //     if(data.status=='succeeded'){
-    //       console.log(`payment was successful`);
-    //       fetch("/.netlify/functions/stock", {
-    //         method: "POST",
-    //         body: JSON.stringify(State.getCart())
-    //       })
-    //       submit(encodeData(token))
-    //     }
-    //   });
-    // });
-  }
+      fetch("/.netlify/functions/purchase", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(r=>r.json()).then(data=>{
+        if(data.status=='succeeded'){
+          console.log(`payment was successful`);
+          // // call stock.js
+          // reportCartToInventory()
+          // // invoke form submit
+          // submit(encodeData(token))
+          // // invoke sendGrid
+          // sendEmail(token.email,encodeData(token))
+          console.log('email on token=> '+token.email)
+          // update UI to thanks message
+          onCompletePayment()
+        }else{
+          console.log(data.status,data.err)
+        }
+      })
+      .catch(error=>console.log(error.toString()))
+    }
+  })
 }
+
 const encode = (data) => {
   return Object.keys(data)
       .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
