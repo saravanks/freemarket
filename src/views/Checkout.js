@@ -34,25 +34,31 @@ const fetchInventory = () =>{
 }
 
 const checkDBForInventory = () => {
-  var itemsToRemove = []
   return fetchInventory().then(inv=>{
-    console.log('inventory : ' + inv)
+    var itemsToRemove = []
+    console.log('inventory : ' + JSON.stringify(inv))
     State.getCart().forEach((item,index)=>{
       var inventoryName = ''
-      // if something is selected, and it is tracked separate, add to list as its stockName
+      // if something is selected, and it is tracked separate, set inventoryName to be it's stockName
+      console.log('item selected = '+item.selected)
+      console.log('selected separateStock =  : '+item.options.filter(o=>o.title==item.selected)[0].separateStock)
       if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
         inventoryName = `${item.title}(${item.selected})`
       } else {
         inventoryName = item.title
       }
+      console.log('inventory name = '+inventoryName)
       // if we have an entry in inventory with this name
-      if(inv[inventoryName]!=undefined){
+      console.log('stock according to github = '+inv[inventoryName])
+      var itemCurrentStock = inv.filter(i=>i.title==inventoryName)[0]
+      if(itemCurrentStock !=undefined){
+      // if(inv[inventoryName]!=undefined){
         // if we have less stock then is asked for, we must modify the cart
-        if(inv[inventoryName] < item.quantity){
+        if(itemCurrentStock < item.quantity){
           // add to list to notify user
           itemsToRemove.push(inventoryName)
           // change the cart
-          State.modCart(index,inv[inventoryName])
+          State.modCart(index,itemCurrentStock)
         }
       }
     })
@@ -126,7 +132,7 @@ const reportCartToInventory=()=>{
 
 const onToken = token => {
   // look at github version of inventory.json to see if everything in the cart is actually still available
-  // and modify the cart, then return to '/cart' if not. 
+  // If not, modify the cart, then return to '/cart'. 
   checkDBForInventory().then(allGood=>{
     if(allGood){
       const data = {
