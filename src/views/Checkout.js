@@ -34,35 +34,36 @@ const fetchInventory = () =>{
 }
 
 const checkDBForInventory = () => {
-  const inv = fetchInventory()
-  console.log('inventory : ' + inv)
-  var itemsToRemove = []
-  State.getCart().forEach((item,index)=>{
-    var inventoryName = ''
-    // if something is selected, and it is tracked separate, add to list as its stockName
-    if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
-      inventoryName = `${item.title}(${item.selected})`
-    } else {
-      inventoryName = item.title
-    }
-    // if we have an entry in inventory with this name
-    if(inv[inventoryName]!=undefined){
-      // if we have less stock then is asked for, we must modify the cart
-      if(inv[inventoryName] < item.quantity){
-        // add to list to notify user
-        itemsToRemove.push(inventoryName)
-        // change the cart
-        State.modCart(index,inv[inventoryName])
+  fetchInventory().then(inv=>{
+    console.log('inventory : ' + inv)
+    var itemsToRemove = []
+    State.getCart().forEach((item,index)=>{
+      var inventoryName = ''
+      // if something is selected, and it is tracked separate, add to list as its stockName
+      if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
+        inventoryName = `${item.title}(${item.selected})`
+      } else {
+        inventoryName = item.title
       }
+      // if we have an entry in inventory with this name
+      if(inv[inventoryName]!=undefined){
+        // if we have less stock then is asked for, we must modify the cart
+        if(inv[inventoryName] < item.quantity){
+          // add to list to notify user
+          itemsToRemove.push(inventoryName)
+          // change the cart
+          State.modCart(index,inv[inventoryName])
+        }
+      }
+    })
+    console.log('items to remove :' + itemsToRemove)
+    if(itemsToRemove.length > 0){
+      alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
+      this.props.history.push('/store')
+    } else {
+    return true
     }
   })
-  console.log('items to remove :' + itemsToRemove)
-  if(itemsToRemove.length > 0){
-    alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
-    this.props.history.push('/store')
-  } else {
-  return true
-  }
 }
 
 const sendEmail = (address,message) => {
