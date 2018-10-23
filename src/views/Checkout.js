@@ -49,12 +49,15 @@ const checkDBForInventory = () => {
       }
       console.log('inventory name = '+inventoryName)
       // if we have an entry in inventory with this name
-      console.log('stock according to github = '+inv[inventoryName])
-      var itemCurrentStock = inv.filter(i=>i.title==inventoryName)[0]
-      if(itemCurrentStock !=undefined){
+      var itemCurrentStockItem = inv.filter(i=>i.title==inventoryName)[0]
+      console.log('stock according to github = '+itemCurrentStockItem)
+      if(itemCurrentStockItem){
+        console.log('that item is tracked and its quantity is : ' + itemCurrentStockItem.value)
+      }
+      if(itemCurrentStockItem !=undefined){
       // if(inv[inventoryName]!=undefined){
         // if we have less stock then is asked for, we must modify the cart
-        if(itemCurrentStock < item.quantity){
+        if(itemCurrentStockItem.value < item.quantity){
           // add to list to notify user
           itemsToRemove.push(inventoryName)
           // change the cart
