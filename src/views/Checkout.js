@@ -61,7 +61,7 @@ const checkDBForInventory = () => {
           // add to list to notify user
           itemsToRemove.push(inventoryName)
           // change the cart
-          State.modCart(index,itemCurrentStock)
+          State.modCart(index,itemCurrentStockItem.value)
         }
       }
     })
