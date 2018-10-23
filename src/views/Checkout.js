@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from "react-router-dom"
 import { observer } from 'mobx-react';
 import { slugify } from '../util/url'
 import uuid from 'uuid/v4'
@@ -9,6 +10,9 @@ import data from '../data.json'
 import './Checkout.css'
 import Link from '../components/Link'
 import {PUBLIC_KEY} from '../PUBLIC_KEY.js'
+import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
+
+const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
 
 const l = x =>console.log(x)
 
@@ -18,6 +22,47 @@ var purchaseDataString = ''
 const onCompletePayment = () =>{
   State.setTransactionComplete(1)
   State.reset()
+}
+
+const fetchInventory = () =>{
+  console.log('fetching inventory...')
+  try{
+    return fetch(`${BASE_URL}/content/inventory/inventory.json`,{ method:"GET" })
+    .then(r=>r.json())
+    .then(r=>JSON.parse(atob(r.content)).inventory)
+  }catch(e){console.log(e)}
+}
+
+const checkDBForInventory = () => {
+  const inv = fetchInventory()
+  console.log('inventory : ' + inv)
+  var itemsToRemove = []
+  State.getCart().forEach((item,index)=>{
+    var inventoryName = ''
+    // if something is selected, and it is tracked separate, add to list as its stockName
+    if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
+      inventoryName = `${item.title}(${item.selected})`
+    } else {
+      inventoryName = item.title
+    }
+    // if we have an entry in inventory with this name
+    if(inv[inventoryName]!=undefined){
+      // if we have less stock then is asked for, we must modify the cart
+      if(inv[inventoryName] < item.quantity){
+        // add to list to notify user
+        itemsToRemove.push(inventoryName)
+        // change the cart
+        State.modCart(index,inv[inventoryName])
+      }
+    }
+  })
+  console.log('items to remove :' + itemsToRemove)
+  if(itemsToRemove.length > 0){
+    alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
+    this.props.history.push('/store')
+  } else {
+  return true
+  }
 }
 
 const sendEmail = (address,message) => {
@@ -79,44 +124,49 @@ const reportCartToInventory=()=>{
 }
 
 const onToken = token => {
-  const data = {
-    token,
-    amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
-    idempotency_key:uuid(),
-  }
-  fetch("/.netlify/functions/purchase", {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-  .then(r=>r.json()).then(data=>{
-    if(data.status=='succeeded'){
-      console.log(`payment was successful`);
-      // // call stock.js
-      // reportCartToInventory()
-      // // invoke form submit
-      // submit(encodeData(token))
-      // // invoke sendGrid
-      sendEmail(token.email,encodeData(token))
-      console.log('email on token=> '+token.email)
-      // update UI to thanks message
-      onCompletePayment()
-    }else{
-      console.log(data.status,data.err)
+  // look at github version of inventory.json to see if everything in the cart is actually still available
+  // and modify the cart, then return to '/cart' if not. 
+  if(checkDBForInventory()){
+
+    const data = {
+      token,
+      amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
+      idempotency_key:uuid(),
     }
-  })
-  .catch(error=>console.log(error.toString()))
-  // .then(response => {
-  //   response.json().then(data => {
-  //     if(data.status=='succeeded'){
-  //       console.log(`payment was successful`);
-  //       fetch("/.netlify/functions/stock", {
-  //         method: "POST",
-  //         body: JSON.stringify(State.getCart())
-  //       })
-  //       submit(encodeData(token))
-  //     }
-  //   });
-  // });
+    fetch("/.netlify/functions/purchase", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+    .then(r=>r.json()).then(data=>{
+      if(data.status=='succeeded'){
+        console.log(`payment was successful`);
+        // // call stock.js
+        // reportCartToInventory()
+        // // invoke form submit
+        // submit(encodeData(token))
+        // // invoke sendGrid
+        sendEmail(token.email,encodeData(token))
+        console.log('email on token=> '+token.email)
+        // update UI to thanks message
+        onCompletePayment()
+      }else{
+        console.log(data.status,data.err)
+      }
+    })
+    .catch(error=>console.log(error.toString()))
+    // .then(response => {
+    //   response.json().then(data => {
+    //     if(data.status=='succeeded'){
+    //       console.log(`payment was successful`);
+    //       fetch("/.netlify/functions/stock", {
+    //         method: "POST",
+    //         body: JSON.stringify(State.getCart())
+    //       })
+    //       submit(encodeData(token))
+    //     }
+    //   });
+    // });
+  }
 }
 const encode = (data) => {
   return Object.keys(data)
@@ -382,7 +432,10 @@ class Checkout extends React.Component {
         </div>
         <div 
           style={{height:'30px',width:'200px',}}
-          onClick={()=>sendEmail('test',encodeData({}))}  
+          onClick={()=>
+            // sendEmail('test',encodeData({}))
+            this.props.history.push('/store')
+          }  
         >
           email
         </div>
@@ -419,4 +472,4 @@ class Checkout extends React.Component {
   }
 }
 
-export default observer(Checkout)
+export default withRouter(observer(Checkout))
