@@ -61,25 +61,43 @@ var fetchInventory = () =>{
 //     })
 //   }catch(e){console.log(e)}
 // }
+// var getTrackedItemsFromProducts=(products=[],inv=[])=>{
+//   var inventory = []
+//   for(let {title='',options=[],trackInventory=false, trackOptions=false} of products){
+//     // if the product is tracked, unless all the items stock separate, log the product as is
+//     if(trackInventory && (options.length==0 || options.some(({separateStock=false})=>separateStock==false))){
+//       inventory.push(title)
+//     }
+//     // look for options that stock separate and push them as a string like : 'product(option)'
+//     options.forEach(({separateStock=false,title:optionTitle=''})=>{
+//       separateStock && inventory.push(`${title}(${optionTitle})`)
+//     })
+//   }
+//   // return the list of objects, of tracked products and options with their titles and quantities
+//   return inventory.map(title=>{
+//     const value = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
+//     return {title,value}
+//   })
+// }
+
 var getTrackedItemsFromProducts=(products=[],inv=[])=>{
   var inventory = []
-  for(let {title='',options=[],trackInventory=false} of products){
-    // if the product is tracked, unless all the items stock separate, log the product as is
-    if(trackInventory && (options.length==0 || options.some(({separateStock=false})=>separateStock==false))){
-      inventory.push(title)
+  for(let {title='',options=[],trackInventory=false, trackOptions=false} of products){
+    if(!trackInventory && (!trackOptions || options.length==0)){return}
+    if(trackInventory && (!trackOptions || options.length==0)){
+        inventory.push(title)
     }
-    // look for options that stock separate and push them as a string like : 'product(option)'
-    options.forEach(({separateStock=false,title:optionTitle=''})=>{
-      separateStock && inventory.push(`${title}(${optionTitle})`)
-    })
+    if(trackOptions && options.length>0){
+      options.forEach(({title:optionTitle=''})=>{
+        inventory.push(`${title}(${optionTitle})`)
+      })
+    }
   }
-  // return the list of objects, of tracked products and options with their titles and quantities
   return inventory.map(title=>{
     const value = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
     return {title,value}
   })
 }
-
 
 export function InventoryControl(data){
   class InventoryControl extends React.Component{
