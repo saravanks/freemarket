@@ -43,27 +43,28 @@ const checkDBForInventory = () => {
       var inventoryName = ''
       // if something is selected, and it is tracked separate, set inventoryName to be it's stockName
       console.log('item selected = '+item.selected)
-      console.log('selected separateStock =  : '+item.options.filter(o=>o.title==item.selected)[0].separateStock)
-      if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
+      console.log('selected separateStock =  : '+item.trackOptions)
+      // if(item.selected!=' ' && item.options.filter(o=>o.title==item.selected)[0].separateStock){
+      if(item.trackOptions && item.options.length>0){
         inventoryName = `${item.title}(${item.selected})`
       } else {
         inventoryName = item.title
       }
       console.log('inventory name = '+inventoryName)
+      var itemStockCount = inv.filter(i=>i.title==inventoryName)[0]
+      console.log('stock according to github = '+itemStockCount)
       // if we have an entry in inventory with this name
-      var itemCurrentStockItem = inv.filter(i=>i.title==inventoryName)[0]
-      console.log('stock according to github = '+itemCurrentStockItem)
-      if(itemCurrentStockItem){
-        console.log('that item is tracked and its quantity is : ' + itemCurrentStockItem.value)
+      if(itemStockCount){
+        console.log('that item is tracked and its quantity is : ' + itemStockCount.value)
       }
-      if(itemCurrentStockItem !=undefined){
+      if(itemStockCount !=undefined){
       // if(inv[inventoryName]!=undefined){
         // if we have less stock then is asked for, we must modify the cart
-        if(itemCurrentStockItem.value < item.quantity){
+        if(itemStockCount.value < item.quantity){
           // add to list to notify user
           itemsToRemove.push(inventoryName)
           // change the cart
-          State.modCart(index,parseInt(itemCurrentStockItem.value))
+          State.modCart(index,parseInt(itemStockCount.value))
         }
       }
     })
