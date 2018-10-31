@@ -90,7 +90,7 @@ var getTrackedItemsFromProducts=(products=[],inv=[])=>{
   console.log('inv=>'+inv)
   var inventory = []
   for(let {title='',options=[],trackInventory=false, trackOptions=false} of products){
-    // if(!trackInventory && (!trackOptions || options.length==0)){return}
+    // if(!trackInventory && (!trackOptions || options.length==0)){continue}
     if(trackInventory && (!trackOptions || options.length==0)){
         inventory.push(title)
     }

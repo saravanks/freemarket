@@ -42,6 +42,28 @@ class State {
   setTransactionComplete=x=>this.transactionComplete.set(x)
   getTransactionComplete=x=>this.transactionComplete.get()
 
+  getQuantityOfItemInCart=item=>{
+    const {title, selected, trackInventory, trackOptions, options} = item
+    var num = 0
+    // in the case that there are options that stock all together
+    if(trackInventory && !trackOptions && options.length>0){
+      this.getCart().forEach(i=>{
+        if(i.title==title){
+          num += i.quantity
+        }
+      })
+    // but in general we just do this
+    }else{
+      this.getCart().forEach(i=>{
+        if(i.title==title && i.selected==selected){
+          num += i.quantity
+        }
+      })
+    }
+    return num
+  }
+  
+
   reset=()=>{
     this.cart.replace([])
     this.carriers.replace([])

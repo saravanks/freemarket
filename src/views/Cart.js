@@ -13,41 +13,76 @@ const stock = data.inventory[0].inventory
 const toDollars = x => parseFloat(x).toFixed(2)
 
 const getInventory = title =>{
-  //there exists an inventory file
+  // if there exists an inventory file
   if(
     data.inventory && data.inventory.length &&
     data.inventory.filter(x=>x.name=='inventory').length>0 &&
-    // there exists an entry for this item
+  // and there exists an entry for this item
     data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title).length>0
   )
   {
-    // return the value there
+  // return the value there
     return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title)[0].value
   }else{
-    return -1
+    console.log('error in getInventory() when searching for: '+title)
   }
 }
 
 const getStock=item=>{
-  // if no selections to worry about
-  if(item.selected==''){
-    if(item.trackInventory){
-      return getInventory(item.title)
-    }else{
-      return -1
-    }
+  const {options,title, trackInventory, trackOptions,selected} = item
+  // if we dont track this items stock
+  if(!trackInventory && (!trackOptions || options.length<1)){
+    return Infinity
   }
-  // there is a selection
-  const option = item.options.filter(x=>x.title==item.selected)[0]
-  if(option.separateStock){
-    return getInventory(item.title+'('+option.title+')')
-  } else {
-    if(item.trackInventory){
-      return getInventory(item.title)
-    } else {
-      return -1
-    }
+  // if we track its options
+  if(trackOptions && options.length>0){
+    return getInventory(`${title}(${selected})`)
   }
+  // if we track it alone
+  return getInventory(title)
+}
+
+// const getQuantityOfItemInCart=item=>{
+//   const {title, selected, trackInventory, trackOptions, options} = item
+//   var num = 0
+//   // in the case that there are options that stock all together
+//   if(trackInventory && !trackOptions && options.length>0){
+//     State.getCart().forEach(i=>{
+//       if(i.title==title){
+//         num += i.quantity
+//       }
+//     })
+//   // but in general we just do this
+//   }else{
+//     State.getCart().forEach(i=>{
+//       if(i.title==title && i.selected==selected){
+//         num += i.quantity
+//       }
+//     })
+//   }
+//   return num
+// }
+
+// const getStock=item=>{
+//   // if no selections to worry about
+//   if(item.selected==''){
+//     if(item.trackInventory){
+//       return getInventory(item.title)
+//     }else{
+//       return -1
+//     }
+//   }
+//   // there is a selection
+//   const option = item.options.filter(x=>x.title==item.selected)[0]
+//   if(option.separateStock){
+//     return getInventory(item.title+'('+option.title+')')
+//   } else {
+//     if(item.trackInventory){
+//       return getInventory(item.title)
+//     } else {
+//       return -1
+// }
+// }
   // //if we dont track the item or any options
   // if(!item.trackInventory && (item.options.every(x=>x.separateStock==false)){return -1}
   // //if we dont track the item and
@@ -77,7 +112,7 @@ const getStock=item=>{
   //   return 1
   // }
   // return -1
-}
+  // }
 
 const Cart = () =>{
 console.log(State.getCart().slice())
@@ -113,10 +148,15 @@ return(
           <div 
             onClick={(e)=>{
               e.preventDefault()
-              // getStock() is broken
-              if(getStock(item)>=0 && (getStock(item) < item.quantity+1)){
+              // if we track this items stock in any way
+              if((item.trackInventory || (item.trackOptions && item.options.length>0)) &&
+              // and our cart already contains all available stock for it
+                getStock(item) < State.getQuantityOfItemInCart(item)+1){
                 window.alert(`sorry we only have ${getStock(item)} in stock `)
+                // State.modCart(i, item.quantity + getStock(item) - getQuantityOfItemInCart(item))
               }else{
+                console.log(getStock(item))
+                console.log(State.getQuantityOfItemInCart(item))
                 State.modCart(i,item.quantity+1)
               }
             }}
@@ -129,8 +169,7 @@ return(
               style={{width:`${String(item.quantity).length*8+5}px`,minWidth:'33px', textAlign:'center',height:'25px',margin:'3px',padding:'0px'}}
               value={item.quantity?item.quantity:''}
               onChange={e=>{
-                // getStock() is broken
-                if(getStock(item)>=0 && (getStock(item) < parseInt(e.target.value)||0)){
+                if(getStock(item) < parseInt(e.target.value)||0){
                   window.alert(`sorry we only have ${getStock(item)} in stock `)
                 }else{
                   State.modCart(i,parseInt(e.target.value)||0)

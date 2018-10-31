@@ -45,10 +45,8 @@ const getCost = (price,options,selection) =>{
 
 const soldOutOption = (p,o) => {
   if(data.inventory && data.inventory.length && data.inventory[0].inventory){
-  // do we track this options separate?
-    return data.products.filter(x=>x.title==p)[0].options.filter(x=>x.title==o)[0].separateStock &&
     // we have a listing in inventory for it
-    data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')').length>0 &&
+    return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')').length>0 &&
     // is it sold out?
     data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p+'('+o+')')[0].value<1
   }else{
@@ -65,7 +63,32 @@ const soldOut = p =>
   data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==p)[0].value<1
 
 const noSelectionMade=options=> options.length>0 && State.getSelection() == ''
-  
+
+const soldOutViaOtherOptions = item =>{
+  const {trackInventory,trackOptions,options, title} = item
+  // if we dont track it, it cant be sold out
+  if(!trackInventory && (!trackOptions || options.length<1)){return false}
+  const inCart = State.getQuantityOfItemInCart(item)
+  console.log('inCart: '+inCart)
+  var stock = 0
+  // if this item stocks alone
+  if(trackInventory && (!trackOptions || options.length<1)){
+    // if we can find an entry for it in inventory
+    if(data.inventory && data.inventory.length && data.inventory[0].inventory && data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title).length>0){
+      //set stock to that
+      stock = data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title)[0].value
+    }
+    // if the item tracks as its options
+  } else if(trackInventory && options.length>0){
+    const stockName = `${title}(${State.getSelection()})`
+    // if we can find an entry for it in inventory
+    if(data.inventory && data.inventory.length && data.inventory[0].inventory && data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==stockName).length>0){
+      //set stock to that
+      stock = data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==stockName)[0].value
+    }
+  }
+  return inCart >= stock
+}
 
 
 class ProductPage extends React.Component{
@@ -77,18 +100,19 @@ class ProductPage extends React.Component{
     }
   }
   componentDidMount(){
-    const {title='',options=[],trackInventory=false}=this.props.fields
-    // if we track all the options together
-    if(options.length==0 || options.filter(o=>o.separateStock).length==0){
+    const {title='',options=[],trackInventory=false,trackOptions=false}=this.props.fields
+    // if we track this item as itself
+    if(trackInventory && (!trackOptions || options.length==0)){
       this.setState({soldOut:soldOut(title)})
-    }else{
-    // if we track some items separate, it's sold out only if all are sold out
-      const itemsTrackedSoldOut = []
-      if(trackInventory){itemsTrackedSoldOut.push(soldOut(title))}
-      options.forEach(o=>{
-        if(o.separateStock){itemsTrackedSoldOut.push(soldOutOption(title,o.title))}
-      })
-      this.setState({soldOut:itemsTrackedSoldOut.every(i=>i)})
+    // if we track its options, it's sold out only if all are sold out
+    }else if(trackOptions && options.length>0){
+      this.setState({soldOut:options.every(o=>soldOutOption(title,o.title))})
+      // const itemsTrackedSoldOut = []
+      // if(trackInventory){itemsTrackedSoldOut.push(soldOut(title))}
+      // options.forEach(o=>{
+      //   if(o.separateStock){itemsTrackedSoldOut.push(soldOutOption(title,o.title))}
+      // })
+      // this.setState({soldOut:itemsTrackedSoldOut.every(i=>i)})
     }
     // if(soldOut(title) && options.every(o=>soldOutOption(title,o.title))){
     //   this.setState({soldOut:true})
@@ -97,7 +121,7 @@ class ProductPage extends React.Component{
 
   }
   render(){
-    const { trackInventory, title, price, longDescription, images, options=[] } = this.props.fields
+    const { trackInventory, trackOptions, title, price, longDescription, images, options=[] } = this.props.fields
       // if(State.getSelection()!=' ' && data.products.filter(x=>x.title==title)[0].options.filter(x=>x.title==State.getSelection())[0].separateStock){
         // return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title+'('+State.getSelection()+')')[0].value<1
       // }else{
@@ -130,7 +154,7 @@ class ProductPage extends React.Component{
                 ]}
                 onChange={(selection)=>{
                   // if this new selection gets stock tracked separately
-                  if( data.products.filter(x=>x.title==title)[0].options.filter(x=>x.title==selection.label)[0].separateStock){
+                  if(trackOptions && options.length>0){
                   // setState to if its sold out or not
                     this.setState({soldOut:soldOutOption(title,selection.label)})
                     // console.log(title,option + ' stock:' + )
@@ -151,7 +175,7 @@ class ProductPage extends React.Component{
               <div 
                 className="Add-to-cart"
                 onClick={(e)=>{
-                  if(trackInventory || options.some(o=>o.separateStock)){
+                  if(trackInventory || (trackOptions && options.length>0)){
                     if(this.state.soldOut){
                       setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
                       e.preventDefault()
@@ -160,6 +184,11 @@ class ProductPage extends React.Component{
                       e.preventDefault()
                     } else if(noSelectionMade(options)){
                       setTimeout(()=>window.alert('Please select your option!'),200)
+                      e.preventDefault()
+                    } else if(soldOutViaOtherOptions(this.props.fields)){
+                      options.length>0 ?
+                        setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart'),200) :
+                        setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item!'),200)
                       e.preventDefault()
                     }else{
                       State.ATC({...this.props.fields,price:this.state.cost},String(State.getSelection()))
