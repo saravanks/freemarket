@@ -5,6 +5,7 @@
   "date": "2018-10-11T20:54:06.786Z",
   "trackInventory": true,
   "status": "Published",
+  "trackOptions": false,
   "class": "med",
   "title": "jelly-fish",
   "images": [
@@ -23,13 +24,11 @@
   "options": [
     {
       "title": "male",
-      "cost": "5",
-      "separateStock": true
+      "cost": "5"
     },
     {
       "title": "female",
-      "cost": "0",
-      "separateStock": true
+      "cost": "0"
     }
   ]
 }
