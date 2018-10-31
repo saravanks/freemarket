@@ -3,8 +3,9 @@
   "position": "3",
   "price": "2",
   "date": "2018-10-11T21:18:28.435Z",
-  "trackInventory": true,
+  "trackInventory": false,
   "status": "Published",
+  "trackOptions": true,
   "class": "large",
   "title": "business card",
   "images": [
@@ -13,5 +14,15 @@
     }
   ],
   "weight": "0.01",
-  "primaryImage": "/images/uploads/card-og.png"
+  "primaryImage": "/images/uploads/card-og.png",
+  "options": [
+    {
+      "title": "1-sided",
+      "cost": "0"
+    },
+    {
+      "title": "2-sided",
+      "cost": "1"
+    }
+  ]
 }
