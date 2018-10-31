@@ -14,6 +14,7 @@ const fetchProducts = () =>{
     return fetch( BASE_URL+ "content/products", { method:"GET" })
     .then(r=>r.json()).then(r=>r.map(f=>f.path))
     .then(paths=>{
+      console.log('paths=>'+paths)
       return Promise.all(
         paths.filter(p=>p!='content/products/.init').map(path=>
           fetch(BASE_URL+path,{ method:"GET" })
@@ -46,7 +47,11 @@ var fetchInventory = () =>{
   try{
     return fetch(`${BASE_URL}/content/inventory/inventory.json`,{ method:"GET" })
     .then(r=>r.json())
-    .then(r=>JSON.parse(atob(r.content)).inventory)
+    .then(r=>{
+      const inv = JSON.parse(atob(r.content)).inventory
+      console.log('inv Fetch=>'+JSON.stringify(inv))
+      return inv
+    })
   }catch(e){console.log(e)}
 }
 
@@ -81,6 +86,8 @@ var fetchInventory = () =>{
 // }
 
 var getTrackedItemsFromProducts=(products=[],inv=[])=>{
+  console.log('products=>'+products)
+  console.log('inv=>'+inv)
   var inventory = []
   for(let {title='',options=[],trackInventory=false, trackOptions=false} of products){
     if(!trackInventory && (!trackOptions || options.length==0)){return}
@@ -93,7 +100,7 @@ var getTrackedItemsFromProducts=(products=[],inv=[])=>{
       })
     }
   }
-  console.log(JSON.stringify(inventory))
+  console.log('inventory=>'+JSON.stringify(inventory))
   return inventory.map(title=>{
     const value = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
     return {title,value}
@@ -110,7 +117,7 @@ export function InventoryControl(data){
     componentDidMount(){
       this.getInventory()
       .then(inventory=>{
-        console.log(inventory)
+        console.log('setstate=>'+JSON.stringify(inventory))
         this.setState({inventory})
       })
       // try{
@@ -135,7 +142,11 @@ export function InventoryControl(data){
       return Promise.all([
         fetchProducts(),  
         fetchInventory(),
-      ]).then(([p,i])=>getTrackedItemsFromProducts(p,i))
+      ]).then(([p,i])=>{
+        console.log('getInventory p=>'+p)
+        console.log('getInventory i=>'+i)
+        return getTrackedItemsFromProducts(p,i)
+      })
     }
 
     // getInventory = async() => 
