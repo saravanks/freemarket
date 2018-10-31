@@ -93,6 +93,7 @@ var getTrackedItemsFromProducts=(products=[],inv=[])=>{
       })
     }
   }
+  console.log(JSON.stringify(inventory))
   return inventory.map(title=>{
     const value = inv.filter(x=>x.title==title).length!=0 ? inv.filter(x=>x.title==title)[0].value : 0
     return {title,value}
