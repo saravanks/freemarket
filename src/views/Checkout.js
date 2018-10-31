@@ -63,14 +63,14 @@ const checkDBForInventory = () => {
           // add to list to notify user
           itemsToRemove.push(inventoryName)
           // change the cart
-          State.modCart(index,itemCurrentStockItem.value)
+          State.modCart(index,parseInt(itemCurrentStockItem.value))
         }
       }
     })
     console.log('items to remove :' + itemsToRemove)
     if(itemsToRemove.length > 0){
       alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
-      history.push('/store')
+      history.push('/cart')
     } else {
     return true
     }

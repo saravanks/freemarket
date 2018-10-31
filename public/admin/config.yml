@@ -37,6 +37,11 @@ collections: # A list of collections the CMS should be able to edit
           - label: "Image"
             name: "image"
             widget: "image"
+      - label: "track stock for each option as its own product"
+        name: "trackOptions"
+        widget: "boolean"
+        required: true
+        default: false
       - label: "Options"
         name: "options"
         widget: "list"
@@ -48,9 +53,6 @@ collections: # A list of collections the CMS should be able to edit
           - label: Extra Cost
             name: cost
             widget: number
-          - label: Calculate Stock for This Option Separately
-            name: separateStock
-            widget: boolean
       - label: 'Status'
         name: 'status'
         widget: 'select'
