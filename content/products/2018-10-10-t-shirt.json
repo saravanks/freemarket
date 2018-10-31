@@ -5,6 +5,7 @@
   "date": "2018-10-10T19:19:15.054Z",
   "trackInventory": true,
   "status": "Published",
+  "trackOptions": true,
   "class": "small",
   "title": "t-shirt",
   "images": [
@@ -20,8 +21,7 @@
   "options": [
     {
       "title": "red",
-      "cost": "3",
-      "separateStock": true
+      "cost": "3"
     },
     {
       "title": "brown",
