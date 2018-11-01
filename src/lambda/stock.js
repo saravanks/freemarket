@@ -5,7 +5,7 @@ var request = require('request');
 
 function calculateNewInventory(inventory,cart){
   var optionizedCart = cart.map(cartItem=>{
-    const {trackInventory=false,trackOptions=false,options=[],selected='',title='',quantity=0} = cartItem
+    const {trackOptions=false,options=[],selected='',title='',quantity=0} = cartItem
     console.log(JSON.stringify(cartItem))
     if(trackOptions && options.length>0){
       return {

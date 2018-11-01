@@ -153,12 +153,12 @@ const onToken = token => {
       .then(r=>r.json()).then(data=>{
         if(data.status=='succeeded'){
           console.log(`payment was successful`);
-          // // call stock.js
-          // reportCartToInventory()
+          // call stock.js
+          reportCartToInventory()
           // // invoke form submit
           // submit(encodeData(token))
-          // // invoke sendGrid
-          // sendEmail(token.email,encodeData(token))
+          // invoke sendGrid
+          sendEmail(token.email,encodeData(token))
           console.log('email on token=> '+token.email)
           // update UI to thanks message
           onCompletePayment()
