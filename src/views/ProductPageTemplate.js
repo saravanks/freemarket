@@ -9,8 +9,8 @@ import './ProductPage.css'
 export default ({ fields }) => {
   const { title='', price=0, longDescription='', images=[], options=[] } = fields
   return (
-    <div className="App">
-      <div className="Container">
+    <div className="Product-Page-Wrapper">
+      <div className="Product-Page-Container">
         <div className="Product">
           <Gallery imageList={images}/>
           <div className="Product-bar">
