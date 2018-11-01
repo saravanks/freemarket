@@ -19,7 +19,7 @@ class Select extends React.Component{
     this.setState({open:false,selection:null,options:this.props.options})
   }
   render(){
-    const {options=[],onChange=()=>{},title=''} = this.props
+    const {options=[],onChange=()=>{return null},title=''} = this.props
     const {open,selection} = this.state
     return(
       <div className='Select-Container'>
