@@ -122,6 +122,7 @@ collections: # A list of collections the CMS should be able to edit
       preview: false
     folder: content/shipping
     create: true
+    delete: true
     fields:
       - {label: Name, name: title, widget: string}
       - label: Carriers
@@ -146,6 +147,8 @@ collections: # A list of collections the CMS should be able to edit
                 widget: number
   - name: "inventory"
     label: "Inventory"
+    create: false
+    delete: false
     editor:
       preview: false
     files:
@@ -300,6 +303,7 @@ collections: # A list of collections the CMS should be able to edit
   
   - name: "settings"
     label: "Settings"
+    create: false
     delete: false # Prevent users from deleting documents in this collection
     editor:
       preview: false
