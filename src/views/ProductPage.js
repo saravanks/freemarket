@@ -181,7 +181,7 @@ class ProductPage extends React.Component{
                       // setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
                       e.preventDefault()
                     } else if (isAlreadyInCart(title)) {
-                      State.Alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here')
+                      State.Alert('this item is already in your cart, please go to your cart and change the amount instead')
                       // setTimeout(()=> window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
                       e.preventDefault()
                     } else if(noSelectionMade(options)){
