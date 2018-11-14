@@ -3,6 +3,7 @@ import { observable,configure } from "mobx"
 configure({ isolateGlobalState: true })
 
 class State {
+  alertText = observable.box(' ')
   cart = observable([])
   selection = observable.box(' ')
   fields = observable({})
@@ -11,8 +12,13 @@ class State {
   region = observable.box(' ')
   regions = observable([])
   shippingCost = observable.box(0)
+  showAlert = observable.box(false)
   transactionComplete = observable.box(0)
   
+  Alert=text=>{
+    this.alertText.set(text)
+    this.showAlert.set(true)
+  }
   setField =(field,val)=>this.fields[field]=val
   getField = field => this.fields[field] ? this.fields[field] : false
   ATC = (item,selected='')=> this.cart.push({...item,quantity:1,selected})

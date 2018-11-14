@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Helmet from 'react-helmet'
+import { observer } from 'mobx-react';
 
 import Store from './views/Store'
 import Cart from './views/Cart'
@@ -14,7 +15,9 @@ import Blog from './views/Blog'
 import SinglePost from './views/SinglePost'
 import Contact from './views/Contact'
 import NoMatch from './views/NoMatch'
+import State from './views/state'
 
+import Alert from './components/Alert'
 import Footer from './components/Footer'
 import ServiceWorkerNotifications from './components/ServiceWorkerNotifications'
 import Meta from './components/Meta'
@@ -23,6 +26,7 @@ import ScrollToTop from './components/ScrollToTop'
 import data from './data.json'
 import { slugify } from './util/url'
 import { documentHasTerm, getCollectionTerms } from './util/collection'
+
 
 // console.log(data)
 
@@ -119,6 +123,7 @@ class App extends Component {
               ]
             }
           />
+          {State.showAlert.get() && <Alert text={State.alertText.get()}/>}
           <Switch>
             <RouteWithMeta
               path='/'
@@ -237,4 +242,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default observer(App)

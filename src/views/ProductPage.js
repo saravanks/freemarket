@@ -177,18 +177,23 @@ class ProductPage extends React.Component{
                 onClick={(e)=>{
                   if(trackInventory || (trackOptions && options.length>0)){
                     if(this.state.soldOut){
-                      setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
+                      State.Alert('Sorry this item is SOLD OUT!')
+                      // setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
                       e.preventDefault()
                     } else if (isAlreadyInCart(title)) {
-                      setTimeout(()=> window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
+                      State.Alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here')
+                      // setTimeout(()=> window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
                       e.preventDefault()
                     } else if(noSelectionMade(options)){
-                      setTimeout(()=>window.alert('Please select your option!'),200)
+                      State.Alert('Please select your option!')
+                      // setTimeout(()=>window.alert('Please select your option!'),200)
                       e.preventDefault()
                     } else if(soldOutViaOtherOptions(this.props.fields)){
                       options.length>0 ?
-                        setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart'),200) :
-                        setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item!'),200)
+                        State.Alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart') :
+                        // setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart'),200) :
+                        State.Alert('Your cart already contains all the stock we have for this item!')
+                        // setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item!'),200)
                       e.preventDefault()
                     }else{
                       State.ATC({...this.props.fields,price:this.state.cost},String(State.getSelection()))

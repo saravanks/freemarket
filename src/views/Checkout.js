@@ -70,7 +70,7 @@ const checkDBForInventory = () => {
     })
     console.log('items to remove :' + itemsToRemove)
     if(itemsToRemove.length > 0){
-      alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
+      State.Alert(`unfortunately, some items in your cart, namely ${itemsToRemove.join(', ')}, is/are no longer available in the quantities you requested, if at all, your cart has been modified to reflect the available stock.`)
       history.push('/cart')
     } else {
     return true
@@ -183,9 +183,9 @@ const submit = (data) => {
     body: encode({ "form-name": "purchase", "data":data })
   })
     .then(() =>{
-      alert("form submit Success!")
+      State.Alert("form submit Success!")
     })
-    .catch(error => alert(error));
+    .catch(error => State.Alert(error));
 };
 
 const getRegions = () =>{
@@ -434,7 +434,7 @@ class Checkout extends React.Component {
           </table>
           {/* <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p> */}
         </div>
-        <div 
+        {/* <div 
           style={{height:'30px',width:'200px',}}
           onClick={()=>
             // sendEmail('test',encodeData({}))
@@ -442,14 +442,14 @@ class Checkout extends React.Component {
           }  
         >
           email
-        </div>
+        </div> */}
         <div className="Checkout-Stripe-Container">
           <div 
             className='Checkout-Stripe-Blocker'
             style={{height: validateFields() ? '1px' : '60px'}}
             onClick={(e)=>{
               e.preventDefault()
-              alert('Please Fill Out All The Fields')
+              State.Alert('Please Fill Out All The Fields')
             }}
           />
           <div style={{filter:'grayscale(80%)'}}>

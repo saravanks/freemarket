@@ -1,0 +1,69 @@
+.Alert-Container{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 10000;
+}
+
+.Alert-Box{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 35%;
+  bottom:35%;
+  left:10%;
+  right:10%;
+  background-color: white;
+  z-index: 10001;
+}
+
+.Alert-Text{
+  flex:2;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.Alert-Button{
+  flex:1;
+  display: flex;
+  margin: 10px;
+  width:100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  cursor: pointer;
+  background-color:black;
+  color: white;
+  user-select: none;
+}
+
+@media (min-width: 750px) {
+  .Alert-Text{
+    flex:5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .Alert-Box{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 25%;
+    bottom:25%;
+    left:25%;
+    right:25%;
+    background-color: white;
+    z-index: 10001;
+  }
+  
+  }

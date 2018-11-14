@@ -145,14 +145,15 @@ return(
           }
         </div>
         <div className='Cart-Quantity-Widget'>
-          <div 
+        <div 
             onClick={(e)=>{
               e.preventDefault()
               // if we track this items stock in any way
               if((item.trackInventory || (item.trackOptions && item.options.length>0)) &&
               // and our cart already contains all available stock for it
                 getStock(item) < State.getQuantityOfItemInCart(item)+1){
-                window.alert(`sorry we only have ${getStock(item)} in stock `)
+                State.Alert(`sorry we only have ${getStock(item)} in stock `)
+                // window.alert(`sorry we only have ${getStock(item)} in stock `)
                 // State.modCart(i, item.quantity + getStock(item) - getQuantityOfItemInCart(item))
               }else{
                 console.log(getStock(item))
@@ -170,7 +171,8 @@ return(
               value={item.quantity?item.quantity:''}
               onChange={e=>{
                 if(getStock(item) < parseInt(e.target.value)||0){
-                  window.alert(`sorry we only have ${getStock(item)} in stock `)
+                  State.Alert(`sorry we only have ${getStock(item)} in stock `)
+                  // window.alert(`sorry we only have ${getStock(item)} in stock `)
                 }else{
                   State.modCart(i,parseInt(e.target.value)||0)
                 }
