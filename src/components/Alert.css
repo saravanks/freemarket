@@ -1,5 +1,6 @@
 .Alert-Container{
   position: fixed;
+  display: flex;
   top:0;
   left:0;
   right:0;
@@ -13,6 +14,7 @@
 
 .Alert-Box{
   position: fixed;
+  /* flex:1 1 auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +30,9 @@
   flex:2;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  font-size: 14px;
+  margin:5px;
 }
 
 .Alert-Button{
