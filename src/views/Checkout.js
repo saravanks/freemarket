@@ -9,7 +9,7 @@ import State from './state'
 import data from '../data.json'
 import './Checkout.css'
 import Link from '../components/Link'
-import {PUBLIC_KEY} from '../PUBLIC_KEY.js'
+import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
 import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
 
 const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
