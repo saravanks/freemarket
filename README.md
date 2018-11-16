@@ -16,7 +16,7 @@ I aim to include commonly used components and best-practices e.g. forms, setting
 
 ## Get going
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Jinksi/netlify-cms-react-starter&stack=cms)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marchingband/freemarket)
 
 1.  Hit the **Deploy to Netlify** button. This will:
 
