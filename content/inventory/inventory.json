@@ -1,20 +1,3 @@
 {
-  "inventory": [
-    {
-      "title": "t-shirt(red)",
-      "value": "10"
-    },
-    {
-      "title": "t-shirt(brown)",
-      "value": "10"
-    },
-    {
-      "title": "washing machine",
-      "value": "10"
-    },
-    {
-      "title": "jelly-fish",
-      "value": "9"
-    }
-  ]
+  "inventory": []
 }
