@@ -19,7 +19,6 @@ export default ({ fields }) => {
       />
       <div className='section'>
         <div className='container'>
-        <StripeCheckout/>
           <Content source={section1} />
         </div>
       </div>
