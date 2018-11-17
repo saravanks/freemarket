@@ -456,7 +456,7 @@ class Checkout extends React.Component {
             <StripeCheckout 
               style={{width:'250px',margin:'0px'}}
               token={onToken} 
-              stripeKey={PUBLIC_KEY}
+              stripeKey={STRIPE_PUBLIC_KEY}
             />
           </div>
         </div>
