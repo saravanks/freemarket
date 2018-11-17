@@ -9,9 +9,9 @@
   functions = "lambda"
 
 [template.environment]
-  GITHUB_USERNAME = "XXXXXX"
-  GITHUB_PASSWORD = "XXXXXX"
-  MY_EMAIL_ADDRESS = "XXXXXX"
-  SENDGRID_API_KEY = "XXXXXX"
+  GITHUB_USERNAME = "enter your GitHub Username"
+  GITHUB_PASSWORD = "enter your GitHub Password"
+  MY_EMAIL_ADDRESS = "enter your Email address"
+  SENDGRID_API_KEY = "enter your sendgrid API key"
   STRIPE_PUBLIC_KEY = "pk_test_cD1gIBptwIBFuzEaIBXSuLvJ"
   STRIPE_SECRET_KEY = "sk_test_JSTgGfJoc26Yk7f15S1pEJjz"
