@@ -13,6 +13,8 @@ import SimpleCrypto from "simple-crypto-js"
 import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
 import {GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
 
+const simpleCrypto = new SimpleCrypto("Thinktank1!")
+
 const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
 
 var history = undefined
@@ -313,24 +315,27 @@ const validateFields = () =>
   State.getCarrier()!=' ' && 
   formfields.every(f=> State.getField(slugify(f)) != false)
 
-const getEncryptedPromoCodes = () => {
-
-}
-
-const testPromoCode = e => {
-  // console.log(State.getField('promoCode'))
+const onSubmitPromoCode = e => {
   e.preventDefault()
   const entered = State.getField('promoCode')
-  const encryptedPromoCodes = getEncryptedPromoCodes()
-  // decrypt promo codes as an object (second arg is <true>)
-  var simpleCrypto = new SimpleCrypto(GITHUB_PASSWORD)
-  const decryptedPromoCodes = simpleCrypto.decrypt(encryptedPromoCodes,true)
-  if(Object.keys(decryptedPromoCodes).includes(entered)){
-    const discount = decryptedPromoCodes[entered]
+  const promoCodes = data.promoCodes.map(({title,code,discount})=>({
+    title,
+    code: simpleCrypto.decrypt(code),
+    discount: simpleCrypto.decrypt(discount)
+  }))
+  if(promoCodes.map(c=>c.code).includes(entered)){
+    const discount = parseFloat(promoCodes.filter(c=>c.code==entered)[0].discount)
+    State.setDiscount(discount)
+    State.Alert(`this code gives you ${discount}% off!`)
   } else {
-    State.Alert('sorry this promo code is not valid!')
+    State.Alert('sorry, that code is not recognized')
   }
 }
+
+const getDiscount = () => 
+  State.getDiscount() == 0 ?
+  0 :
+  getSubtotal()*(State.getDiscount()/100)
 
 class Checkout extends React.Component {
   componentDidMount(){
@@ -385,9 +390,10 @@ class Checkout extends React.Component {
                 />
               </div>
           )})}
-          <form name='promoCode' onSubmit={testPromoCode}>
+          <form name='promoCode' onSubmit={onSubmitPromoCode} autocomplete="off">
             <div>
               <input
+                autocomplete="off"
                 placeholder="promo code"
                 name='promoCode' 
                 value={State.getField('promoCode') || ''}
@@ -434,6 +440,15 @@ class Checkout extends React.Component {
                 <span className="Checkout-Table" style={{float:"right"}}>{"$" + (getHighestShippingCost()).toFixed(2)}</span>
               </td>              
             </tr>
+          
+          {State.getDiscount()>0 &&
+            <tr style={{width:'100%'}}>
+              <td style={{width:'100%'}}>
+                <span className="Checkout-Table" style={{float:"left"}}>discount</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + getDiscount().toFixed(2)}</span>
+              </td>              
+            </tr>
+          }
           {chargeTax &&
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
@@ -445,7 +460,7 @@ class Checkout extends React.Component {
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>total</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + ((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2)}</span>
               </td>              
             </tr>
           
