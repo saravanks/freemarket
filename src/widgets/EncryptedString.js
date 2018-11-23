@@ -10,7 +10,7 @@ export default class EncryptedString extends React.Component {
   render() {
     const {
       forID,
-      value,
+      value='',
       onChange,
       classNameWrapper,
       setActiveStyle,
