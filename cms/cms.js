@@ -12,7 +12,7 @@ import {SelectDBPreview} from '../src/widgets/SelectDBPreview.js'
 import {SelectClass} from '../src/widgets/SelectClass.js'
 import {SelectProduct} from '../src/widgets/SelectProduct.js'
 import {SelectList} from '../src/widgets/SelectList.js'
-import {EncryptedString} from '../src/widgets/EncryptedString.js'
+import EncryptedString from '../src/widgets/EncryptedString.js'
 
 import '../src/globalStyles.css'
 import data from '../src/data.json'
