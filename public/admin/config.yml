@@ -333,6 +333,6 @@ collections: # A list of collections the CMS should be able to edit
     editor:
       preview: false
     fields:
-      - {label: Name, name: name, widget: string}
+      - {label: Title, name: title, widget: string}
       - {label: Code, name: code, widget: encryptedString}
       - {label: Discount, name: discount, widget: encryptedString}
