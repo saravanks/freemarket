@@ -9,8 +9,9 @@ import State from './state'
 import data from '../data.json'
 import './Checkout.css'
 import Link from '../components/Link'
+import SimpleCrypto from "simple-crypto-js"
 import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
-import {GITHUB_USERNAME} from '../PUBLIC_KEY.js'
+import {GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
 
 const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
 
@@ -308,9 +309,28 @@ const getSubtotal=()=>{
   return cartTotal
 }
 
-const validateFields=()=> 
+const validateFields = () => 
   State.getCarrier()!=' ' && 
   formfields.every(f=> State.getField(slugify(f)) != false)
+
+const getEncryptedPromoCodes = () => {
+
+}
+
+const testPromoCode = e => {
+  // console.log(State.getField('promoCode'))
+  e.preventDefault()
+  const entered = State.getField('promoCode')
+  const encryptedPromoCodes = getEncryptedPromoCodes()
+  // decrypt promo codes as an object (second arg is <true>)
+  var simpleCrypto = new SimpleCrypto(GITHUB_PASSWORD)
+  const decryptedPromoCodes = simpleCrypto.decrypt(encryptedPromoCodes,true)
+  if(Object.keys(decryptedPromoCodes).includes(entered)){
+    const discount = decryptedPromoCodes[entered]
+  } else {
+    State.Alert('sorry this promo code is not valid!')
+  }
+}
 
 class Checkout extends React.Component {
   componentDidMount(){
@@ -365,6 +385,16 @@ class Checkout extends React.Component {
                 />
               </div>
           )})}
+          <form name='promoCode' onSubmit={testPromoCode}>
+            <div>
+              <input
+                placeholder="promo code"
+                name='promoCode' 
+                value={State.getField('promoCode') || ''}
+                onChange={(e)=>State.setField(e.target.name,e.target.value)}
+              />
+            </div>
+          </form>
           <div className='Checkout-Shipping-Dropdown'>
             <Select 
               ref={i=>this.shippingDropdown=i}

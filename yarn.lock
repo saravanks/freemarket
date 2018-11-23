@@ -2387,6 +2387,10 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+crypto-js@^3.1.9-1:
+  version "3.1.9-1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
+
 crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
@@ -8430,6 +8434,12 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
 simple-concat@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.0.tgz#7344cbb8b6e26fb27d66b2fc86f9f6d5997521c6"
+
+simple-crypto-js@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/simple-crypto-js/-/simple-crypto-js-2.0.2.tgz#8075fe0ffa984f70027dd3e148a240f2603732c9"
+  dependencies:
+    crypto-js "^3.1.9-1"
 
 simple-get@^2.7.0, simple-get@^2.8.1:
   version "2.8.1"

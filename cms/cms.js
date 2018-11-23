@@ -12,6 +12,7 @@ import {SelectDBPreview} from '../src/widgets/SelectDBPreview.js'
 import {SelectClass} from '../src/widgets/SelectClass.js'
 import {SelectProduct} from '../src/widgets/SelectProduct.js'
 import {SelectList} from '../src/widgets/SelectList.js'
+import {PromoCodes} from '../src/widgets/PromoCodes.js'
 
 import '../src/globalStyles.css'
 import data from '../src/data.json'
@@ -71,7 +72,6 @@ CMS.registerWidget(
 )
 
 
-
 CMS.registerWidget(
   'selectClassData',
   SelectClass(data)
@@ -81,6 +81,12 @@ CMS.registerWidget(
   'selectproduct',
   SelectProduct(data)
 )
+
+CMS.registerWidget(
+  'promoCodes',
+  PromoCodes(data)
+)
+
 
 // CMS.registerWidget(
 //   'selectClassData', (props) => (
