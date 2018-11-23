@@ -327,6 +327,8 @@ collections: # A list of collections the CMS should be able to edit
           - {label: Enable Service Worker Pre-Cache, name: enableServiceWorker, widget: boolean, required: false}
   - name: "promoCodes"
     label: "Promo Codes"
+    extension: json
+    format: json
     folder: content/promoCodes
     create: true
     delete: true
