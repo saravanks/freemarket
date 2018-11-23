@@ -29,7 +29,7 @@ export default class EncryptedString extends React.Component {
       />
     );
   }
-  onChangeEncrypt = value => this.props.onChange(simpleCrypto.encode(value))
+  onChangeEncrypt = value => this.props.onChange(simpleCrypto.encrypt(value))
   decryptValue    = value => simpleCrypto.decrypt(value)
 
 }
