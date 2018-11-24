@@ -1,17 +1,9 @@
 import React from 'react'
 
-// import {RelationSelectControl} from '../src/widgets/RelationSelect.js'
-// import {TestWidgetControl,TestWidgetPreview} from '../src/widgets/TestWidget.js'
-// import {MRelationControl, MRelationPreview} from '../src/widgets/MRelation.js'
-// import {SlidesControl,SlidesPreview} from './testWidget.js'
-// import {SortList} from '..src/widgets/SortList.js'
-
 import {InventoryControl} from '../src/widgets/InventoryControl.js'
 import {SelectDB} from '../src/widgets/SelectDB.js'
 import {SelectDBPreview} from '../src/widgets/SelectDBPreview.js'
 import {SelectClass} from '../src/widgets/SelectClass.js'
-import {SelectProduct} from '../src/widgets/SelectProduct.js'
-import {SelectList} from '../src/widgets/SelectList.js'
 import EncryptedString from '../src/widgets/EncryptedString.js'
 
 import '../src/globalStyles.css'
@@ -61,16 +53,6 @@ CMS.registerPreviewTemplate('products', ({ entry }) => (
 CMS.registerPreviewTemplate('productStock', ({ entry }) => (
   <ProductPageTemplate fields={entry.toJS().data} />
 ))
-// var relationWidget = CMS.getWidget("relation").control
-// var selectWidget = CMS.getWidget("select").control
-
-var listwidget = CMS.getWidget("list").control
-
-CMS.registerWidget(
-  'selectlist',
-  SelectList(data, listwidget)
-)
-
 
 CMS.registerWidget(
   'selectClassData',
@@ -78,24 +60,10 @@ CMS.registerWidget(
 )
 
 CMS.registerWidget(
-  'selectproduct',
-  SelectProduct(data)
-)
-
-CMS.registerWidget(
   'encryptedString',
   EncryptedString
 )
 
-
-// CMS.registerWidget(
-//   'selectClassData', (props) => (
-//   <SelectClass {...props} data={data} Select={selectWidget}/>
-// ))
-// CMS.registerWidget(
-//   'selectClass',
-//   SelectDB(data,'shipping/classes.json','classes')
-// )
 CMS.registerWidget(
   'selectRegion',
   SelectDB(data,'regionsAndCarriers','regions'),
@@ -111,34 +79,8 @@ CMS.registerWidget(
 CMS.registerWidget(
   'inventory',
   InventoryControl(data)
-  )
+)
 
-    
-    
-    // CMS.registerWidget(
-    //   'selectProducts',
-    //   SelectFile
-    // )
-
-// CMS.registerWidget(
-//   'myrelation',
-//   RelationSelectControl, )
-
-// CMS.registerWidget(
-//   'test',
-//   SlidesControl,
-//   SlidesPreview
-// )
-// CMS.registerWidget(
-//   "stock",      // Widget name
-//   TestWidgetControl, // Editor component
-//   TestWidgetPreview  // Preview component (this is optional)
-// );
-// CMS.registerWidget(
-//   "mrelation",      // Widget name
-//   MRelationControl, // Editor component
-//   MRelationPreview  // Preview component (this is optional)
-// );
 
 // Return to home when user logging out
 window.netlifyIdentity.on('logout', function () {
