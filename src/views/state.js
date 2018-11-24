@@ -15,7 +15,7 @@ class State {
   discount = observable.box(0)
   discountPercent = observable.box(true)
   showAlert = observable.box(false)
-  transactionComplete = observable.box(0)
+  transactionComplete = observable.box(false)
   
   Alert=text=>{
     this.alertText.set(text)

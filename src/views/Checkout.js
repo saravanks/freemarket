@@ -2,21 +2,15 @@ import React from 'react'
 import uuid from 'uuid/v4'
 import StripeCheckout from "react-stripe-checkout"
 import SimpleCrypto from "simple-crypto-js"
-
 import { withRouter } from "react-router-dom"
 import { observer } from 'mobx-react';
-
 import { slugify } from '../util/url'
-
 import Select from '../components/Select.js'
 import Link from '../components/Link'
 import State from './state'
-
 import './Checkout.css'
-
 import data from '../data.json'
-import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
-import {GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
+import {STRIPE_PUBLIC_KEY,GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
 
 const simpleCrypto = new SimpleCrypto(GITHUB_PASSWORD)
 
@@ -30,7 +24,7 @@ const formfields = ['Name','Street Address','City', 'State/Province','ZIP code /
 var purchaseDataString = ''
 
 const onCompletePayment = () =>{
-  State.setTransactionComplete(1)
+  State.setTransactionComplete(true)
   State.reset()
 }
 
@@ -346,7 +340,7 @@ class Checkout extends React.Component {
                             data.regionsAndCarriers.filter(x=>x.name=='settings')[0].taxRate :
                             0
     const taxRate = taxRatePercent/100
-    if(State.getTransactionComplete()==0)
+    if(State.getTransactionComplete()==false)
       {
         // State.setSelection(' ')
         // State.setCarrier(' ')
@@ -482,7 +476,7 @@ class Checkout extends React.Component {
         <div>
         <div className='Checkout-Complete-Text'>Thanks very much for your order! Your payment details are below</div>
         <div className='Checkout-Complete-Text'>{purchaseDataString}</div>
-        <Link to='/store'><div onClick={()=>State.setTransactionComplete(0)} className='Checkout-Back'> Return to Shop </div></Link>
+        <Link to='/store'><div onClick={()=>State.setTransactionComplete(false)} className='Checkout-Back'> Return to Shop </div></Link>
         </div>
       )
     }
