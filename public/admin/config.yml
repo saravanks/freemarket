@@ -338,4 +338,4 @@ collections: # A list of collections the CMS should be able to edit
       - {label: Title, name: title, widget: string}
       - {label: Code, name: code, widget: encryptedString}
       - {label: Discount, name: discount, widget: encryptedString}
-      - {label: "Discount is percent (turn off for flat dollar discount)", name: percent, widget: bool, default: true}
+      - {label: "Discount is percent (turn off for flat dollar discount)", name: percent, widget: boolean, default: true}
