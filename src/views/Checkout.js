@@ -13,7 +13,7 @@ import SimpleCrypto from "simple-crypto-js"
 import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
 import {GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
 
-const simpleCrypto = new SimpleCrypto("Thinktank1!")
+const simpleCrypto = new SimpleCrypto(GITHUB_PASSWORD)
 
 const BASE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/freemarket/contents/`
 
@@ -146,7 +146,7 @@ const onToken = token => {
     if(allGood){
       const data = {
         token,
-        amount: Math.ceil((getSubtotal()+getHighestShippingCost())*1.15*100),
+        amount: Math.ceil((getSubtotal()-getDiscount()+getHighestShippingCost())*1.15*100),
         idempotency_key:uuid(),
       }
       fetch("/.netlify/functions/purchase", {
@@ -335,7 +335,7 @@ const onSubmitPromoCode = e => {
 const getDiscount = () => 
   State.getDiscount() == 0 ?
   0 :
-  getSubtotal()*(State.getDiscount()/100)
+  getSubtotal()*(State.getDiscount()/100).toFixed(2)
 
 class Checkout extends React.Component {
   componentDidMount(){
