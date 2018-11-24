@@ -329,6 +329,7 @@ const onSubmitPromoCode = e => {
     State.Alert(`this code gives you ${discount}% off!`)
   } else {
     State.Alert('sorry, that code is not recognized')
+    State.setField(e.target.name,'')
   }
 }
 
@@ -390,6 +391,7 @@ class Checkout extends React.Component {
                 />
               </div>
           )})}
+          </form>
           <form name='promoCode' onSubmit={onSubmitPromoCode} autocomplete="off">
             <div>
               <input
@@ -398,6 +400,7 @@ class Checkout extends React.Component {
                 name='promoCode' 
                 value={State.getField('promoCode') || ''}
                 onChange={(e)=>State.setField(e.target.name,e.target.value)}
+                onBlur={(e)=>State.getField(e.target.name)!=''&&onSubmitPromoCode(e)}
               />
             </div>
           </form>
@@ -422,7 +425,6 @@ class Checkout extends React.Component {
               }}
             />
           </div>
-        </form>
         <div className="Checkout-Register" style={{width:'250px'}}>
           {/* <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
           <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p> */}
