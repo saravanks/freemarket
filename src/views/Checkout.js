@@ -328,8 +328,8 @@ const onSubmitPromoCode = e => {
     State.setDiscount(discountObject.discount)
     State.setDiscountPercent(discountObject.percent)
     discountObject.percent ?
-      State.Alert(`this code gives you ${discount}% off!`) :
-      State.Alert(`this code gives you $${discount} off!`) 
+      State.Alert(`this code gives you ${discountObject.discount}% off!`) :
+      State.Alert(`this code gives you $${discountObject.discount} off!`) 
   } else {
     State.Alert('sorry, that code is not recognized')
     State.setField(e.target.name,'')
