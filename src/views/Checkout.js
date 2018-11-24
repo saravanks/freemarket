@@ -306,7 +306,7 @@ const onSubmitPromoCode = e => {
     const discountObject = promoCodes.filter(c=>c.code==entered)[0]
     State.setDiscount(parseFloat(discountObject.discount))
     State.setDiscountPercent(discountObject.percent)
-    discountObject.percent==true ?
+    discountObject.percent ?
       State.Alert(`this code gives you ${discountObject.discount}% off!`) :
       State.Alert(`this code gives you $${discountObject.discount} off!`) 
   } else {
@@ -319,7 +319,7 @@ const getDiscount = () => {
   if(State.getDiscount() == 0){
     return 0
   }
-  if(State.getDiscountPercent()==true){
+  if(State.getDiscountPercent()){
     return (getSubtotal()*(State.getDiscount()/100)).toFixed(2)
   }
   return State.getDiscount().toFixed(2)
@@ -445,7 +445,7 @@ class Checkout extends React.Component {
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>total</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + Math.max(((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2),0.00.toFixed(2))}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + Math.max(((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)),0).toFixed(2) }</span>
               </td>              
             </tr>
           </table>
