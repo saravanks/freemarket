@@ -151,7 +151,7 @@ const onToken = token => {
     if(allGood){
       const data = {
         token,
-        amount: Math.ceil((getSubtotal()-getDiscount()+getHighestShippingCost())*1.15*100),
+        amount: Math.max(Math.ceil((getSubtotal()-getDiscount()+getHighestShippingCost())*1.15*100),0),
         idempotency_key:uuid(),
       }
       fetch("/.netlify/functions/purchase", {
@@ -208,20 +208,6 @@ const getRegions = () =>{
   })
   return Array.from(regions)
 }
-
-// const getCarriers = region => {
-//   // console.log('region: ' + region)
-//   var carriers = {}
-//   State.getCart().forEach(item=>{
-//     const shippingClass = data.shipping.filter(c=>c.title==item.class)[0]
-//     shippingClass && shippingClass.carriers.forEach(carrier=>{
-//       if(carrier.regions.filter(r=>r.title==State.getRegion()).length>0){
-//         carriers[carrier.title] = carrier.regions.filter(r=>r.title==State.getRegion())[0].cost
-//       }
-//     })
-//   })
-//   return Object.keys(carriers)
-// }
 
 const getCarriers = () =>{
   const currentRegion = State.getRegion()
@@ -304,13 +290,6 @@ const getSubtotal=()=>{
   var cartTotal = 0
   State.getCart().forEach(item=>{
     var price = parseFloat(item.price)
-    // ** now doing this in the product page **
-    // if(item.selected!=''){
-    //   const opt = item.options.filter(o=>o.title==item.selected)[0]
-    //   if(opt.cost){
-    //     price += parseFloat(opt.cost)
-    //   }
-    // }
     cartTotal += (price * parseFloat(item.quantity))
   })
   return cartTotal
@@ -327,7 +306,7 @@ const onSubmitPromoCode = e => {
     title,
     code: simpleCrypto.decrypt(code),
     discount: simpleCrypto.decrypt(discount),
-    percent,
+    percent
   }))
   if(promoCodes.map(c=>c.code).includes(entered)){
     const discountObject = promoCodes.filter(c=>c.code==entered)[0]
@@ -405,44 +384,41 @@ class Checkout extends React.Component {
                 />
               </div>
           )})}
-          </form>
-          <form name='promoCode' onSubmit={onSubmitPromoCode} autocomplete="off">
-            <div>
-              <input
-                autocomplete="off"
-                placeholder="promo code"
-                name='promoCode' 
-                value={State.getField('promoCode') || ''}
-                onChange={(e)=>State.setField(e.target.name,e.target.value)}
-                onBlur={(e)=>State.getField(e.target.name)!=''&&onSubmitPromoCode(e)}
-              />
-            </div>
-          </form>
-          <div className='Checkout-Shipping-Dropdown'>
-            <Select 
-              ref={i=>this.shippingDropdown=i}
-              title={State.getCarrier()==' ' ? 'Please Select Shipping :' : State.getCarrier()}
-              options={
-                freeShipping() ? 
-                [{label:'Free Shipping', value:0}] :
-                State.getCarriers().map(c=>({label:c,value:c}))}
-              onChange={(e)=>{
-                if(e!=null){
-                  State.setCarrier(e.label);
-                  encodeData()
-                  console.log('from carrier change=>')
-                  console.log(State.getCarrier())
-                }
-                console.log('from carrier change (with null)=>')
-                console.log(State.getCarrier())
-
-              }}
+        </form>
+        <form name='promoCode' onSubmit={onSubmitPromoCode} autocomplete="off">
+          <div>
+            <input
+              autocomplete="off"
+              placeholder="promo code"
+              name='promoCode' 
+              value={State.getField('promoCode') || ''}
+              onChange={(e)=>State.setField(e.target.name,e.target.value)}
+              onBlur={(e)=>State.getField(e.target.name)!=''&&onSubmitPromoCode(e)}
             />
           </div>
+        </form>
+        <div className='Checkout-Shipping-Dropdown'>
+          <Select 
+            ref={i=>this.shippingDropdown=i}
+            title={State.getCarrier()==' ' ? 'Please Select Shipping :' : State.getCarrier()}
+            options={
+              freeShipping() ? 
+              [{label:'Free Shipping', value:0}] :
+              State.getCarriers().map(c=>({label:c,value:c}))}
+            onChange={(e)=>{
+              if(e!=null){
+                State.setCarrier(e.label);
+                encodeData()
+                console.log('from carrier change=>')
+                console.log(State.getCarrier())
+              }
+              console.log('from carrier change (with null)=>')
+              console.log(State.getCarrier())
+
+            }}
+          />
+        </div>
         <div className="Checkout-Register" style={{width:'250px'}}>
-          {/* <p className="Checkout-Text">{"subtotal : $" + (getSubtotal()).toFixed(2)}</p>
-          <p className="Checkout-Text">{"shipping : $" + (getHighestShippingCost()).toFixed(2)}</p> */}
-          {/* <p className="Checkout-Text">{"taxes    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate)).toFixed(2)}</p> */}
           <table style={{width:'100%'}}>
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
@@ -456,12 +432,11 @@ class Checkout extends React.Component {
                 <span className="Checkout-Table" style={{float:"right"}}>{"$" + (getHighestShippingCost()).toFixed(2)}</span>
               </td>              
             </tr>
-          
           {State.getDiscount()>0 &&
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>discount</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + getDiscount()}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"-$" + getDiscount()}</span>
               </td>              
             </tr>
           }
@@ -476,34 +451,11 @@ class Checkout extends React.Component {
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>total</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + ((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2)}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + Math.max(((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2),0)}</span>
               </td>              
             </tr>
-          
-          {/* <tr><td style={{position:'relative`'}}>
-            <div style={{position:'absolute',textAlign:'left'}}>{"subtotal"}</div>
-            <div style={{position:'absolute',textAlign:'right'}}>{"$" + (getSubtotal()).toFixed(2)}</div>
-          </td></tr>
-          <td style={{position:'relative`'}}>
-            <div  style={{position:'absolute',textAlign:'left'}}>{"total test"}</div>
-            <div  style={{position:'absolute',textAlign:'right'}}>{"total test"}</div>
-          </td>
-          <td style={{position:'relative`'}}>
-            <div  style={{position:'absolute',textAlign:'left'}}>{"total test"}</div>
-            <div  style={{position:'absolute',textAlign:'right'}}>{"total test"}</div>
-          </td> */}
           </table>
-          {/* <p className="Checkout-Text">{"total    : $" + ((getSubtotal()+getHighestShippingCost())*(taxRate+1)).toFixed(2)}</p> */}
         </div>
-        {/* <div 
-          style={{height:'30px',width:'200px',}}
-          onClick={()=>
-            // sendEmail('test',encodeData({}))
-            this.props.history.push('/store')
-          }  
-        >
-          email
-        </div> */}
         <div className="Checkout-Stripe-Container">
           <div 
             className='Checkout-Stripe-Blocker'
