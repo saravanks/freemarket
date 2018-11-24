@@ -455,7 +455,7 @@ class Checkout extends React.Component {
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>discount</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + getDiscount().toFixed(2)}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + getDiscount()}</span>
               </td>              
             </tr>
           }
