@@ -340,8 +340,8 @@ const getDiscount = () => {
   if(State.getDiscount() == 0){
     return 0
   }
-  if(State.getDiscountPercent()){
-    return getSubtotal()*(State.getDiscount()/100).toFixed(2)
+  if(State.getDiscountPercent()==true){
+    return (getSubtotal()*(State.getDiscount()/100)).toFixed(2)
   }
   return State.getDiscount().toFixed(2)
 }
