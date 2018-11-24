@@ -1,15 +1,20 @@
 import React from 'react'
-import { withRouter } from "react-router-dom"
-import { observer } from 'mobx-react';
-import { slugify } from '../util/url'
 import uuid from 'uuid/v4'
 import StripeCheckout from "react-stripe-checkout"
-import Select from '../components/Select.js'
-import State from './state'
-import data from '../data.json'
-import './Checkout.css'
-import Link from '../components/Link'
 import SimpleCrypto from "simple-crypto-js"
+
+import { withRouter } from "react-router-dom"
+import { observer } from 'mobx-react';
+
+import { slugify } from '../util/url'
+
+import Select from '../components/Select.js'
+import Link from '../components/Link'
+import State from './state'
+
+import './Checkout.css'
+
+import data from '../data.json'
 import {STRIPE_PUBLIC_KEY} from '../PUBLIC_KEY.js'
 import {GITHUB_USERNAME,GITHUB_PASSWORD} from '../PUBLIC_KEY.js'
 
@@ -318,16 +323,17 @@ const validateFields = () =>
 const onSubmitPromoCode = e => {
   e.preventDefault()
   const entered = State.getField('promoCode')
-  const promoCodes = data.promoCodes.map(({title,code,discount})=>({
+  const promoCodes = data.promoCodes.map(({title,code,discount,percent})=>({
     title,
     code: simpleCrypto.decrypt(code),
-    discount: simpleCrypto.decrypt(discount)
+    discount: simpleCrypto.decrypt(discount),
+    percent,
   }))
   if(promoCodes.map(c=>c.code).includes(entered)){
     const discountObject = promoCodes.filter(c=>c.code==entered)[0]
     State.setDiscount(parseFloat(discountObject.discount))
     State.setDiscountPercent(discountObject.percent)
-    discountObject.percent ?
+    discountObject.percent==true ?
       State.Alert(`this code gives you ${discountObject.discount}% off!`) :
       State.Alert(`this code gives you $${discountObject.discount} off!`) 
   } else {
