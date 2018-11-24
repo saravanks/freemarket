@@ -23,17 +23,6 @@ const getSmallImages = (images) => {
   return smallImages
 }
 
-// const isAlreadyInCart = title =>{
-//   const selected = State.getSelection()
-//   const cart = State.getCart()
-//   var isInCart = false
-//   cart.forEach(item=>{
-//     if(item.title==title && item.selected==selected){
-//       isInCart = true
-//     }
-//   })
-//   return isInCart
-// }
 const isAlreadyInCart = title => State.getCart().some(x=>x.title==title && x.selected==State.getSelection())
 
 const getCost = (price,options,selection) =>{
@@ -107,28 +96,11 @@ class ProductPage extends React.Component{
     // if we track its options, it's sold out only if all are sold out
     }else if(trackOptions && options.length>0){
       this.setState({soldOut:options.every(o=>soldOutOption(title,o.title))})
-      // const itemsTrackedSoldOut = []
-      // if(trackInventory){itemsTrackedSoldOut.push(soldOut(title))}
-      // options.forEach(o=>{
-      //   if(o.separateStock){itemsTrackedSoldOut.push(soldOutOption(title,o.title))}
-      // })
-      // this.setState({soldOut:itemsTrackedSoldOut.every(i=>i)})
-    }
-    // if(soldOut(title) && options.every(o=>soldOutOption(title,o.title))){
-    //   this.setState({soldOut:true})
-    // }
     State.setSelection('')
 
   }
   render(){
     const { trackInventory, trackOptions, title, price, longDescription, images, options=[] } = this.props.fields
-      // if(State.getSelection()!=' ' && data.products.filter(x=>x.title==title)[0].options.filter(x=>x.title==State.getSelection())[0].separateStock){
-        // return data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title+'('+State.getSelection()+')')[0].value<1
-      // }else{
-        // return  data.products.filter(x=>x.title==title)[0].trackInventory &&
-                // data.inventory.filter(x=>x.name=='inventory')[0].inventory.filter(x=>x.title==title)[0].value<1
-    //   }
-    // }
     return (
       <div className="Product-Page-Wrapper">
         <div className="Product-Page-Container">
@@ -142,32 +114,22 @@ class ProductPage extends React.Component{
               <Select
                 title='Please Select :'
                 options={[...options.map(o=>({
-                  // ({label:( o.cost==0 || o.cost=='') ? 
-                  //           o.title :
-                  //           `${o.title}  (+ $${o.cost})`,
-                  //   value:o.title
-                  // }))
-                  label:o.title,
-                  value:o.title,
-                  cost:toDollars(o.cost)
-                }))
+                    label:o.title,
+                    value:o.title,
+                    cost:toDollars(o.cost)
+                  }))
                 ]}
                 onChange={(selection)=>{
                   // if this new selection gets stock tracked separately
                   if(trackOptions && options.length>0){
                   // setState to if its sold out or not
                     this.setState({soldOut:soldOutOption(title,selection.label)})
-                    // console.log(title,option + ' stock:' + )
                   } else {
                   // otherwise set it to weather or not the main item is in stock
                     this.setState({soldOut:soldOut(title)})
                   }
-                  // if(soldOutOption(title,selection.label)){
-                  //   this.setState({soldOut:true})
-                  // }
                   State.setSelection(selection.value?selection.value:selection)
                   this.setState({cost:getCost(price,options,State.getSelection())})
-                  // this.setState({soldOut:soldOut(title)})
                 }}
               />
             }
@@ -178,22 +140,17 @@ class ProductPage extends React.Component{
                   if(trackInventory || (trackOptions && options.length>0)){
                     if(this.state.soldOut){
                       State.Alert('Sorry this item is SOLD OUT!')
-                      // setTimeout(()=>window.alert('Sorry this item is SOLD OUT!'),200)
                       e.preventDefault()
                     } else if (isAlreadyInCart(title)) {
                       State.Alert('this item is already in your cart, please go to your cart and change the amount instead')
-                      // setTimeout(()=> window.alert('this item is already in your cart, please go to your cart and change the amount instead of adding more items from here'),200)
                       e.preventDefault()
                     } else if(noSelectionMade(options)){
                       State.Alert('Please select your option!')
-                      // setTimeout(()=>window.alert('Please select your option!'),200)
                       e.preventDefault()
                     } else if(soldOutViaOtherOptions(this.props.fields)){
                       options.length>0 ?
                         State.Alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart') :
-                        // setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item! You can add this option after removing some of the other options from your cart'),200) :
                         State.Alert('Your cart already contains all the stock we have for this item!')
-                        // setTimeout(()=>window.alert('Your cart already contains all the stock we have for this item!'),200)
                       e.preventDefault()
                     }else{
                       State.ATC({...this.props.fields,price:this.state.cost},String(State.getSelection()))

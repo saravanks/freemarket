@@ -29,15 +29,8 @@ export default ({data}) => {
       )}
       {products.length % 2 != 0 && 
         <div className="Store-Product">
-        {/* <Link  to={'/'+slugify(title)}>
-          <img  
-            className="Store-Product-Page-image"  
-            src={primaryImage}
-          />
-        </Link > */}
         <div className="Store-Product-bar">
           <div className="Store-Product-name">
-            {/* {title} */}
           </div>
         </div>
       </div>
@@ -45,7 +38,3 @@ export default ({data}) => {
       }
     </div>
   )}
-
-  const sortProducts = products =>{
-
-  }
