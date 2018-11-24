@@ -451,7 +451,7 @@ class Checkout extends React.Component {
             <tr style={{width:'100%'}}>
               <td style={{width:'100%'}}>
                 <span className="Checkout-Table" style={{float:"left"}}>total</span>
-                <span className="Checkout-Table" style={{float:"right"}}>{"$" + Math.max(((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2),0)}</span>
+                <span className="Checkout-Table" style={{float:"right"}}>{"$" + Math.max(((getSubtotal()+getHighestShippingCost()-getDiscount())*(taxRate+1)).toFixed(2),0.toFixed(2))}</span>
               </td>              
             </tr>
           </table>
