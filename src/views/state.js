@@ -13,6 +13,7 @@ class State {
   regions = observable([])
   shippingCost = observable.box(0)
   discount = observable.box(0)
+  discountPercent = observable.box(true)
   showAlert = observable.box(false)
   transactionComplete = observable.box(0)
   
@@ -22,6 +23,8 @@ class State {
   }
   setDiscount = discount => this.discount=discount
   getDiscount = () => this.discount
+  setDiscountPercent = discountPercent => this.discountPercent=discountPercent
+  getDiscountPercent = () => this.discountPercent
   setField =(field,val)=>this.fields[field]=val
   getField = field => this.fields[field] ? this.fields[field] : false
   ATC = (item,selected='')=> this.cart.push({...item,quantity:1,selected})

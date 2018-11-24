@@ -324,19 +324,28 @@ const onSubmitPromoCode = e => {
     discount: simpleCrypto.decrypt(discount)
   }))
   if(promoCodes.map(c=>c.code).includes(entered)){
-    const discount = parseFloat(promoCodes.filter(c=>c.code==entered)[0].discount)
-    State.setDiscount(discount)
-    State.Alert(`this code gives you ${discount}% off!`)
+    const discountObject = parseFloat(promoCodes.filter(c=>c.code==entered)[0])
+    State.setDiscount(discountObject.discount)
+    State.setDiscountPercent(discountObject.percent)
+    discountObject.percent ?
+      State.Alert(`this code gives you ${discount}% off!`) :
+      State.Alert(`this code gives you $${discount} off!`) 
   } else {
     State.Alert('sorry, that code is not recognized')
     State.setField(e.target.name,'')
   }
 }
 
-const getDiscount = () => 
-  State.getDiscount() == 0 ?
-  0 :
-  getSubtotal()*(State.getDiscount()/100).toFixed(2)
+const getDiscount = () => {
+  if(State.getDiscount() == 0){
+    return 0
+  }
+  if(getDiscountPercent()){
+    return getSubtotal()*(State.getDiscount()/100).toFixed(2) :
+  } else {
+    return State.getDiscount().toFixed(2)
+  }
+}
 
 class Checkout extends React.Component {
   componentDidMount(){
