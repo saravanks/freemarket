@@ -324,8 +324,8 @@ const onSubmitPromoCode = e => {
     discount: simpleCrypto.decrypt(discount)
   }))
   if(promoCodes.map(c=>c.code).includes(entered)){
-    const discountObject = parseFloat(promoCodes.filter(c=>c.code==entered)[0])
-    State.setDiscount(discountObject.discount)
+    const discountObject = promoCodes.filter(c=>c.code==entered)[0]
+    State.setDiscount(parseFloat(discountObject.discount))
     State.setDiscountPercent(discountObject.percent)
     discountObject.percent ?
       State.Alert(`this code gives you ${discountObject.discount}% off!`) :
