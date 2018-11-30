@@ -110,7 +110,7 @@ class ProductPage extends React.Component{
               <div className="Product-name">{title || ''}</div>
               <div className="Product-price">${toDollars(this.state.cost)}</div>
             </div>
-            {options.length>0 &&
+            {options.length>1 &&
               <Select
                 title='Please Select :'
                 options={[...options.map(o=>({
