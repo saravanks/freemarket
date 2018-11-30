@@ -1,3 +1,7 @@
 {
-  "regions": []
+  "regions": [
+    {
+      "title": "World"
+    }
+  ]
 }
