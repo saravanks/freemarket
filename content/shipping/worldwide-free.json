@@ -1,0 +1,15 @@
+{
+  "title": "Worldwide Free",
+  "carriers": [
+    {
+      "title": "Free",
+      "regions": [
+        {
+          "title": "World",
+          "cost": "10",
+          "perKg": "10"
+        }
+      ]
+    }
+  ]
+}
