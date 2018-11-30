@@ -53,7 +53,7 @@ const soldOut = p =>
 
 const noSelectionMade=options=> options.length>0 && State.getSelection() == ''
 
-const soldOutViaOtherOptions = item =>{
+const soldOutViaOtherOptions = item => {
   const {trackInventory,trackOptions,options, title} = item
   // if we dont track it, it cant be sold out
   if(!trackInventory && (!trackOptions || options.length<1)){return false}
@@ -97,7 +97,7 @@ class ProductPage extends React.Component{
     }else if(trackOptions && options.length>0){
       this.setState({soldOut:options.every(o=>soldOutOption(title,o.title))})
     State.setSelection('')
-
+    }
   }
   render(){
     const { trackInventory, trackOptions, title, price, longDescription, images, options=[] } = this.props.fields
@@ -110,7 +110,7 @@ class ProductPage extends React.Component{
               <div className="Product-name">{title || ''}</div>
               <div className="Product-price">${toDollars(this.state.cost)}</div>
             </div>
-            {options && options.length>0 &&
+            {options.length>0 &&
               <Select
                 title='Please Select :'
                 options={[...options.map(o=>({
