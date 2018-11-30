@@ -1,0 +1,20 @@
+{
+  "longDescription": "kjhg",
+  "meta": {},
+  "position": 1,
+  "price": "10",
+  "date": "2018-11-30T22:55:46.301Z",
+  "trackInventory": false,
+  "status": "Published",
+  "trackOptions": false,
+  "class": "Worldwide Free",
+  "title": "Test",
+  "images": [
+    {
+      "image": "/images/uploads/card-og.png"
+    }
+  ],
+  "weight": "1",
+  "primaryImage": "/images/uploads/card-og.png",
+  "options": []
+}
