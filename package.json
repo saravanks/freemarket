@@ -56,7 +56,7 @@
     "react-router-dom": "^4.1.1",
     "react-snapshot": "^1.1.0",
     "react-stripe-checkout": "^2.6.3",
-    "simple-crypto-js": "^2.0.2",
+    "simple-crypto-js": "^2.3.0",
     "stripe": "^6.11.0",
     "uuid": "^3.3.2"
   },
